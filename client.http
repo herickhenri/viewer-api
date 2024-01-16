@@ -1,0 +1,57 @@
+### Get equipments
+
+GET http://127.0.0.1:3333/equipments
+
+### Get equipment
+GET http://127.0.0.1:3333/equipment/I-1502-BB-220
+
+
+### Post equipments
+
+POST http://127.0.0.1:3333/equipment
+content-type: application/json
+
+{
+  "name": "Bomba de condensado",
+  "description": "È uma bomba po, envia condensado ela",
+  "tag": "I-1502-bb-103"
+}
+
+### Get Panoramas
+GET http://127.0.0.1:3333/panoramas
+
+### Post Panorama
+
+POST http://127.0.0.1:3333/panorama
+content-type: application/json
+
+{
+  "name": "Piso dos pds",
+  "image": "example image",
+  "gps_x": 12.3,
+  "gps_y": 14.2,
+  "markings": [{
+    "equipment_id": "clr3yoeln0000z8sq2adds4qy",
+    "coord_x": 160,
+    "coord_y": 200
+  }]
+}
+
+### Get markings to panorama
+GET http://127.0.0.1:3333/markings/panorama/clr432fie0000bf3sodd6q357
+
+### Get markings to equipment
+GET http://127.0.0.1:3333/markings/equipment/clr3yoeln0000z8sq2adds4qy
+
+### Patch equipment
+PATCH http://127.0.0.1:3333/equipment/clr3yoeln0000z8sq2adds4qy
+content-type: application/json
+
+{
+  "name": "Bomba de lama de cal",
+  "description": "È uma bomba po, envia condensado ela"
+}
+
+### Delete Equipment
+
+DELETE http://127.0.0.1:3333/equipment/clr88q31h0000mq97f7zdserg

@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Equipment {
+  id          String    @id @default(cuid())
+  tag         String    @unique
+  name        String
+  description String?
+  photos      String[]
+  markings    marking[]
+
+  @@map("equipaments")
+}
+
+model Panorama {
+  id       String    @id @default(cuid())
+  name     String
+  image    String
+  gps_x    Decimal
+  gps_y    Decimal
+  markings marking[]
+
+  @@map("panoramas")
+}
+
+model marking {
+  coord_x Int
+  coord_y Int
+
+  equipments   Equipment @relation(fields: [equipment_id], references: [id])
+  equipment_id String
+
+  panoramas   Panorama @relation(fields: [panorama_id], references: [id])
+  panorama_id String
+
+  @@id([panorama_id, equipment_id])
+  @@map("markings")
+}
