@@ -12,7 +12,6 @@ export class AmazonS3ImagesStorage implements ImagesStorage {
         accessKeyId: env.AWS_ACESS_KEY_ID,
         secretAccessKey: env.AWS_SECRET_ACESS_KEY,
       },
-      endpoint: 's3.us-west-2.amazonaws.com',
     })
   }
 
