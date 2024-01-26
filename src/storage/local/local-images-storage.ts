@@ -2,7 +2,6 @@ import { File, Image, ImagesStorage } from '../images-storage'
 import path from 'node:path'
 import fs from 'fs'
 import { randomUUID } from 'node:crypto'
-import { UploadingImageError } from '../../use-cases/errors/uploading-image-error'
 
 export class LocalImagesStorage implements ImagesStorage {
   private storageDirectory: string
@@ -31,7 +30,7 @@ export class LocalImagesStorage implements ImagesStorage {
 
     fs.writeFile(filePath, buffer, (err) => {
       if (err) {
-        throw new UploadingImageError()
+        console.log(err)
       }
     })
 
@@ -44,7 +43,7 @@ export class LocalImagesStorage implements ImagesStorage {
     const filePath = `${this.storageDirectory}\\${key}`
     fs.unlink(filePath, (err) => {
       if (err) {
-        throw new Error()
+        console.log(err)
       }
     })
   }
@@ -60,7 +59,7 @@ export class LocalImagesStorage implements ImagesStorage {
 
       fs.writeFile(filePath, buffer, (err) => {
         if (err) {
-          throw new UploadingImageError()
+          console.log(err)
         }
       })
     })
@@ -73,7 +72,7 @@ export class LocalImagesStorage implements ImagesStorage {
       const filePath = `${this.storageDirectory}\\${key}`
       fs.unlink(filePath, (err) => {
         if (err) {
-          throw new Error()
+          console.log(err)
         }
       })
     })
