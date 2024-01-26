@@ -28,5 +28,5 @@ export async function appRoutes(app: FastifyInstance) {
   app.delete('/panorama/:id', deletePanorama)
 
   app.post('/image', uploadImage)
-  app.delete('/image', deleteImage)
+  app.delete('/image/:key', deleteImage)
 }

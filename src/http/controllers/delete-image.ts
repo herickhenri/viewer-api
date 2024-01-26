@@ -6,11 +6,11 @@ export async function deleteImage(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  const deleteImageBodySchema = z.object({
+  const deleteImageParamsSchema = z.object({
     key: z.string(),
   })
 
-  const { key } = deleteImageBodySchema.parse(request.body)
+  const { key } = deleteImageParamsSchema.parse(request.params)
 
   const createEquipmentUseCases = makeDeleteImageUseCases()
 
