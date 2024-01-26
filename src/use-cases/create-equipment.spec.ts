@@ -15,10 +15,15 @@ describe('Create Equipment Use Case', () => {
 
   it('shoud be able to create equipment', async () => {
     const data = {
-      name: 'Bomba de lama',
-      tag: 'I-1501-BB-101',
-      description: 'Bomba de lama para o LMCD 1',
-      photos: ['http://file/photo'],
+      name: 'Equipment-1',
+      tag: 'A-1111-BB-222',
+      description: 'The equipment-1',
+      photos: [
+        {
+          link: 'example-link',
+          key: 'example-key',
+        },
+      ],
     }
 
     const { equipment } = await sut.execute(data)

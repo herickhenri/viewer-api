@@ -3,7 +3,8 @@ import { Prisma } from '@prisma/client'
 export type Panorama = {
   id: string
   name: string
-  image: string
+  image_key: string
+  image_link: string
   gps_x: Prisma.Decimal
   gps_y: Prisma.Decimal
   markings?: {
@@ -15,7 +16,8 @@ export type Panorama = {
 
 export type PanoramaInput = {
   name: string
-  image: string
+  image_key: string
+  image_link: string
   gps_x: number
   gps_y: number
   markings?: {
@@ -27,7 +29,8 @@ export type PanoramaInput = {
 
 export type UpdatePanorama = {
   name?: string
-  image?: string
+  image_key?: string
+  image_link?: string
   gps_x?: number
   gps_y?: number
   markings?: {

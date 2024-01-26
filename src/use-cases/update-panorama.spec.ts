@@ -2,6 +2,7 @@ import { expect, describe, it, beforeEach } from 'vitest'
 import { InMemoryPanoramasRepository } from '../repositories/in-memory/in-memory-panoramas-repository'
 import { UpdatePanoramaUseCases } from './update-panorama'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { createPanorama } from '@/utils/test/create-panorama'
 
 let panoramasRepository: InMemoryPanoramasRepository
 let sut: UpdatePanoramaUseCases
@@ -13,19 +14,7 @@ describe('Update Panorama Use Case', () => {
   })
 
   it('shoud be able to update panorama', async () => {
-    const { id } = await panoramasRepository.create({
-      name: 'Piso dos PDs',
-      image: 'http://file/image',
-      gps_x: 10.5,
-      gps_y: 20.2,
-      markings: [
-        {
-          coord_x: 500,
-          coord_y: 340,
-          equipment_id: 'equipment-1',
-        },
-      ],
-    })
+    const { id } = await createPanorama(panoramasRepository)
 
     const updatePanorama = {
       name: 'Piso dos dregs',
@@ -48,19 +37,7 @@ describe('Update Panorama Use Case', () => {
   })
 
   it('shoud be able update panorama with markings empty', async () => {
-    const { id } = await panoramasRepository.create({
-      name: 'Piso dos PDs',
-      image: 'http://file/image',
-      gps_x: 10.5,
-      gps_y: 20.2,
-      markings: [
-        {
-          coord_x: 500,
-          coord_y: 340,
-          equipment_id: 'equipment-1',
-        },
-      ],
-    })
+    const { id } = await createPanorama(panoramasRepository)
 
     const { panorama } = await sut.execute({ data: { markings: [] }, id })
 

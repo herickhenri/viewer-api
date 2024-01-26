@@ -2,6 +2,7 @@ import { expect, describe, it, beforeEach } from 'vitest'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
 import { GetPanoramaUseCases } from './get-panorama'
 import { InMemoryPanoramasRepository } from '../repositories/in-memory/in-memory-panoramas-repository'
+import { createPanorama } from '@/utils/test/create-panorama'
 
 let panoramasRepository: InMemoryPanoramasRepository
 let sut: GetPanoramaUseCases
@@ -13,20 +14,7 @@ describe('Get Panorama Use Case', () => {
   })
 
   it('shoud be able to get panorama by id', async () => {
-    const data = {
-      name: 'Piso dos PDs',
-      image: 'http://file/image',
-      gps_x: 10.5,
-      gps_y: 20.2,
-      markings: [
-        {
-          coord_x: 500,
-          coord_y: 340,
-          equipment_id: 'equipment-1',
-        },
-      ],
-    }
-    const { id } = await panoramasRepository.create(data)
+    const { id } = await createPanorama(panoramasRepository)
 
     const { panorama } = await sut.execute({ id })
 

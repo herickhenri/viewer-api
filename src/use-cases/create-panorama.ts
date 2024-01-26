@@ -15,14 +15,16 @@ export class CreatePanoramaUseCases {
 
   async execute({
     name,
-    image,
+    image_key,
+    image_link,
     gps_x,
     gps_y,
     markings,
   }: createPanoramaRequest): Promise<createPanoramaResponse> {
     const panorama = await this.PanoramasRepository.create({
       name,
-      image,
+      image_key,
+      image_link,
       gps_x,
       gps_y,
       markings,

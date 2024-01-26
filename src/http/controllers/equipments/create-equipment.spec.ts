@@ -18,7 +18,12 @@ describe('Create Equipment (e2e)', () => {
         name: 'Bomba de lama',
         description: 'Bomba de lama para o LMCD 1',
         tag: 'I-1501-BB-101',
-        photos: ['http://photo/file'],
+        photos: [
+          {
+            key: 'example-key',
+            link: 'example-link',
+          },
+        ],
       })
 
     expect(response.statusCode).toEqual(201)

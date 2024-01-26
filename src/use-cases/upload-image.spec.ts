@@ -16,11 +16,15 @@ describe('Upload Image Use Case', () => {
   it('shoud be able to upload image', async () => {
     const filePath = path.resolve(__dirname, '..', 'utils', 'test', 'test.png')
     const buffer = fs.readFileSync(filePath)
-    const { image } = await sut.execute({buffer, contentType: 'image/png', name: 'image-1'})
+    const { image } = await sut.execute({
+      buffer,
+      contentType: 'image/png',
+      name: 'image-1',
+    })
 
     expect(image.name).toEqual('image-1')
-    
-    //reset tmp
+
+    // reset tmp
     localImagesStorage.delete(image.key)
   })
 })

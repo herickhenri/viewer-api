@@ -14,7 +14,8 @@ describe('Update Panorama (e2e)', () => {
   it.only('shoud be able to update panorama', async () => {
     const createResponse = await request(app.server).post('/panorama').send({
       name: 'panorama-1',
-      image: 'http://file/panorama-1',
+      image_link: 'example-link',
+      image_key: 'example-key',
       gps_x: 100,
       gps_y: 150,
     })

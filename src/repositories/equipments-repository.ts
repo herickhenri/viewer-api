@@ -3,21 +3,30 @@ export type Equipment = {
   name: string
   description: string | null
   tag: string
-  photos?: string[]
+  photos?: {
+    key: string
+    link: string
+  }[]
 }
 
 export type EquipmentInput = {
   name: string
   description?: string
   tag: string
-  photos?: string[]
+  photos?: {
+    key: string
+    link: string
+  }[]
 }
 
 export type UpdateEquipment = {
   name?: string
   description?: string
   tag?: string
-  photos?: string[]
+  photos?: {
+    key: string
+    link: string
+  }[]
 }
 
 export interface EquipmentsRepository {

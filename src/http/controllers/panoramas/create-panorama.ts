@@ -8,7 +8,8 @@ export async function createPanorama(
 ) {
   const panoramaBodySchema = z.object({
     name: z.string(),
-    image: z.string(),
+    image_key: z.string(),
+    image_link: z.string(),
     gps_x: z.number(),
     gps_y: z.number(),
     markings: z
@@ -22,19 +23,11 @@ export async function createPanorama(
       .optional(),
   })
 
-  const { name, image, gps_x, gps_y, markings } = panoramaBodySchema.parse(
-    request.body,
-  )
+  const data = panoramaBodySchema.parse(request.body)
 
   const createPanoramaUseCases = makeCreatePanoramaUseCases()
 
-  const panorama = await createPanoramaUseCases.execute({
-    name,
-    image,
-    gps_x,
-    gps_y,
-    markings,
-  })
+  const panorama = await createPanoramaUseCases.execute(data)
 
   return reply.status(201).send(panorama)
 }

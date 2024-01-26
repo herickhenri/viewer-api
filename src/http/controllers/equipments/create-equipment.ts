@@ -12,22 +12,22 @@ export async function createEquipment(
     tag: z.string().toUpperCase(),
     name: z.string(),
     description: z.string().optional(),
-    photos: z.array(z.string()).optional(),
+    photos: z
+      .array(
+        z.object({
+          key: z.string(),
+          link: z.string(),
+        }),
+      )
+      .optional(),
   })
 
-  const { name, description, tag, photos } = equipmentBodySchema.parse(
-    request.body,
-  )
+  const data = equipmentBodySchema.parse(request.body)
 
   try {
     const createEquipmentUseCases = makeCreateEquipmentUseCases()
 
-    const equipment = await createEquipmentUseCases.execute({
-      name,
-      description,
-      tag,
-      photos,
-    })
+    const equipment = await createEquipmentUseCases.execute(data)
 
     return reply.status(201).send(equipment)
   } catch (err) {

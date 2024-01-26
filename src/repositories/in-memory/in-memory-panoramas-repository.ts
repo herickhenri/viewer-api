@@ -24,14 +24,22 @@ export class InMemoryPanoramasRepository implements PanoramasRepository {
     return this.panoramas
   }
 
-  async create(data: PanoramaInput) {
+  async create({
+    name,
+    image_link,
+    image_key,
+    gps_x,
+    gps_y,
+    markings,
+  }: PanoramaInput) {
     const panorama = {
       id: randomUUID(),
-      name: data.name,
-      image: data.image,
-      gps_x: new Prisma.Decimal(data.gps_x),
-      gps_y: new Prisma.Decimal(data.gps_y),
-      markings: data.markings,
+      name,
+      image_key,
+      image_link,
+      gps_x: new Prisma.Decimal(gps_x),
+      gps_y: new Prisma.Decimal(gps_y),
+      markings,
     }
 
     this.panoramas.push(panorama)
@@ -39,7 +47,10 @@ export class InMemoryPanoramasRepository implements PanoramasRepository {
     return panorama
   }
 
-  async update(data: UpdatePanorama, id: string) {
+  async update(
+    { name, image_key, image_link, gps_x, gps_y, markings }: UpdatePanorama,
+    id: string,
+  ) {
     const index = this.panoramas.findIndex((panorama) => panorama.id === id)
     const panorama = this.panoramas.find((panorama) => panorama.id === id)
 
@@ -49,11 +60,12 @@ export class InMemoryPanoramasRepository implements PanoramasRepository {
 
     const updatedPanorama = {
       id: panorama.id,
-      name: data.name || panorama.name,
-      image: data.image || panorama.image,
-      gps_x: new Prisma.Decimal(data.gps_x || panorama.gps_x),
-      gps_y: new Prisma.Decimal(data.gps_y || panorama.gps_y),
-      markings: data.markings || panorama.markings,
+      name: name || panorama.name,
+      image_link: image_link || panorama.image_link,
+      image_key: image_key || panorama.image_key,
+      gps_x: new Prisma.Decimal(gps_x || panorama.gps_x),
+      gps_y: new Prisma.Decimal(gps_y || panorama.gps_y),
+      markings: markings || panorama.markings,
     }
 
     this.panoramas.splice(index, 1, updatedPanorama)

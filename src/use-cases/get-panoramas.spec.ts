@@ -1,6 +1,7 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 import { InMemoryPanoramasRepository } from '../repositories/in-memory/in-memory-panoramas-repository'
 import { GetPanoramasUseCases } from './get-panoramas'
+import { createPanorama } from '@/utils/test/create-panorama'
 
 let panoramasRepository: InMemoryPanoramasRepository
 let sut: GetPanoramasUseCases
@@ -12,19 +13,7 @@ describe('Get Panoramas Use Case', () => {
   })
 
   it('shoud be able to get panoramas', async () => {
-    await panoramasRepository.create({
-      name: 'Piso dos PDs',
-      image: 'http://file/image',
-      gps_x: 10.5,
-      gps_y: 20.2,
-      markings: [
-        {
-          coord_x: 500,
-          coord_y: 340,
-          equipment_id: 'equipment-1',
-        },
-      ],
-    })
+    await createPanorama(panoramasRepository)
 
     const { panoramas } = await sut.execute()
 

@@ -31,13 +31,13 @@ export class InMemoryEquipmentsRepository implements EquipmentsRepository {
     return this.equipments
   }
 
-  async create(data: EquipmentInput) {
+  async create({ tag, name, description, photos }: EquipmentInput) {
     const equipment = {
       id: randomUUID(),
-      tag: data.tag,
-      name: data.name,
-      description: data.description || null,
-      photos: data.photos,
+      tag,
+      name,
+      description: description || null,
+      photos,
     }
 
     this.equipments.push(equipment)
@@ -45,7 +45,10 @@ export class InMemoryEquipmentsRepository implements EquipmentsRepository {
     return equipment
   }
 
-  async update(data: UpdateEquipment, id: string) {
+  async update(
+    { name, tag, description, photos }: UpdateEquipment,
+    id: string,
+  ) {
     const index = this.equipments.findIndex((equipment) => equipment.id === id)
     const equipment = this.equipments.find((equipment) => equipment.id === id)
 
@@ -55,13 +58,11 @@ export class InMemoryEquipmentsRepository implements EquipmentsRepository {
 
     const updatedEquipment = {
       id: equipment.id,
-      tag: data.tag || equipment.tag,
-      name: data.name || equipment.name,
+      tag: tag || equipment.tag,
+      name: name || equipment.name,
       description:
-        typeof data.description === 'string'
-          ? data.description
-          : equipment.description,
-      photos: data.photos || equipment.photos,
+        typeof description === 'string' ? description : equipment.description,
+      photos: photos || equipment.photos,
     }
 
     this.equipments.splice(index, 1, updatedEquipment)

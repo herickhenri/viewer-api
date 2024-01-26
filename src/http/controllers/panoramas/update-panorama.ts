@@ -11,7 +11,8 @@ export async function updatePanorama(
     id: z.string(),
     data: z.object({
       name: z.string().optional(),
-      image: z.string().optional(),
+      image_key: z.string().optional(),
+      image_link: z.string().optional(),
       gps_x: z.number().optional(),
       gps_y: z.number().optional(),
       markings: z

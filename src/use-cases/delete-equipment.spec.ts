@@ -2,6 +2,7 @@ import { expect, describe, it, beforeEach } from 'vitest'
 import { InMemoryEquipmentsRepository } from '../repositories/in-memory/in-memory-equipments-repository'
 import { DeleteEquipmentUseCases } from './delete-equipment'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { createEquipment } from '@/utils/test/create-equipment'
 
 let equipmentsRepository: InMemoryEquipmentsRepository
 let sut: DeleteEquipmentUseCases
@@ -13,11 +14,7 @@ describe('Delete Equipment Use Case', () => {
   })
 
   it('shoud be able to delete equipment', async () => {
-    const { id } = await equipmentsRepository.create({
-      name: 'Bomba de lama',
-      tag: 'I-1501-BB-101',
-      description: 'Bomba de lama para o LMCD 1',
-    })
+    const { id } = await createEquipment(equipmentsRepository)
 
     await sut.execute({ id })
 

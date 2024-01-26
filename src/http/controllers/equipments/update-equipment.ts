@@ -15,7 +15,14 @@ export async function updateEquipment(
       tag: z.string().toUpperCase().optional(),
       name: z.string().optional(),
       description: z.string().optional(),
-      photos: z.array(z.string()).optional(),
+      photos: z
+        .array(
+          z.object({
+            key: z.string(),
+            link: z.string(),
+          }),
+        )
+        .optional(),
     }),
   })
 

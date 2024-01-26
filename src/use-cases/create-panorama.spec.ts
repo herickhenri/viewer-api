@@ -13,8 +13,9 @@ describe('Create Panorama Use Case', () => {
 
   it('shoud be able to create panorama', async () => {
     const data = {
-      name: 'Piso dos PDs',
-      image: 'http://file/image',
+      name: 'panorama-1',
+      image_key: 'example-key',
+      image_link: 'example-link',
       gps_x: 10.5,
       gps_y: 20.2,
       markings: [

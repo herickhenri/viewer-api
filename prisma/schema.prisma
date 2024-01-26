@@ -15,19 +15,29 @@ model Equipment {
   tag         String    @unique
   name        String
   description String?
-  photos      String[]
+  photos      Photo[]
   markings    marking[]
 
   @@map("equipaments")
 }
 
+model Photo {
+  key         String     @id
+  link        String     @unique
+  Equipment   Equipment? @relation(fields: [equipmentId], references: [id])
+  equipmentId String?
+
+  @@map("photos")
+}
+
 model Panorama {
-  id       String    @id @default(cuid())
-  name     String
-  image    String
-  gps_x    Decimal
-  gps_y    Decimal
-  markings marking[]
+  id         String    @id @default(cuid())
+  name       String
+  image_key  String
+  image_link String
+  gps_x      Decimal
+  gps_y      Decimal
+  markings   marking[]
 
   @@map("panoramas")
 }

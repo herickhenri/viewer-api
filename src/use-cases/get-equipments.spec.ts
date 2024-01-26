@@ -1,6 +1,7 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 import { InMemoryEquipmentsRepository } from '../repositories/in-memory/in-memory-equipments-repository'
 import { GetEquipmentsUseCases } from './get-equipments'
+import { createEquipment } from '@/utils/test/create-equipment'
 
 let equipmentsRepository: InMemoryEquipmentsRepository
 let sut: GetEquipmentsUseCases
@@ -12,11 +13,7 @@ describe('Get Equipments Use Case', () => {
   })
 
   it('shoud be able to get equipments', async () => {
-    await equipmentsRepository.create({
-      name: 'Bomba de lama',
-      tag: 'I-1501-BB-101',
-      description: 'Bomba de lama para o LMCD 1',
-    })
+    await createEquipment(equipmentsRepository)
 
     const { equipments } = await sut.execute()
 

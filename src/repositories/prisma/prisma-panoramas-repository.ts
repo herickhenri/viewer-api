@@ -1,4 +1,4 @@
-import { prisma } from '../../lib/prisma'
+import { prisma } from '@/lib/prisma'
 import {
   PanoramaInput,
   PanoramasRepository,
@@ -43,11 +43,19 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
     return panoramas
   }
 
-  async create({ name, image, gps_x, gps_y, markings }: PanoramaInput) {
+  async create({
+    name,
+    image_key,
+    image_link,
+    gps_x,
+    gps_y,
+    markings,
+  }: PanoramaInput) {
     const panorama = await prisma.panorama.create({
       data: {
         name,
-        image,
+        image_key,
+        image_link,
         gps_x,
         gps_y,
         markings: {
@@ -69,7 +77,7 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
   }
 
   async update(
-    { name, image, gps_x, gps_y, markings }: UpdatePanorama,
+    { name, image_key, image_link, gps_x, gps_y, markings }: UpdatePanorama,
     id: string,
   ) {
     if (markings) {
@@ -83,7 +91,8 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
       where: { id },
       data: {
         name,
-        image,
+        image_key,
+        image_link,
         gps_x,
         gps_y,
       },
