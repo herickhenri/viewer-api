@@ -25,7 +25,6 @@ export class UpdateEquipmentUseCases {
     id,
   }: updateEquipmentRequest): Promise<updateEquipmentResponse> {
     const equipmentFound = await this.equipmentsRepository.findById(id)
-    console.log(equipmentFound)
     if (!equipmentFound) {
       throw new ResourceNotFoundError()
     }
