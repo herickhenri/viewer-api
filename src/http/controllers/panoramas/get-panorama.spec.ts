@@ -21,7 +21,7 @@ describe('Get Panorama (e2e)', () => {
     })
     const { id }: { id: string } = createResponse.body.panorama
 
-    const response = await request(app.server).get(`/panorama`).query({ id })
+    const response = await request(app.server).get(`/panorama/${id}`)
 
     expect(response.statusCode).toEqual(200)
     expect(response.body.panorama).toEqual(createResponse.body.panorama)

@@ -7,8 +7,8 @@ export async function deletePanorama(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  const requestBodyShema = z.object({ id: z.string() })
-  const { id } = requestBodyShema.parse(request.query)
+  const requestParamsShema = z.object({ id: z.string() })
+  const { id } = requestParamsShema.parse(request.params)
 
   try {
     const deletePanoramaUseCases = makeDeletePanoramaUseCases()

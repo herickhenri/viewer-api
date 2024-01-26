@@ -27,9 +27,7 @@ describe('Delete Equipment (e2e)', () => {
       })
     const { id }: { id: string } = createResponse.body.equipment
 
-    const response = await request(app.server)
-      .delete(`/equipment`)
-      .query({ id })
+    const response = await request(app.server).delete(`/equipment/${id}`)
 
     expect(response.statusCode).toEqual(204)
   })

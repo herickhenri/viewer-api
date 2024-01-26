@@ -16,16 +16,16 @@ import { deleteImage } from './controllers/delete-image'
 
 export async function appRoutes(app: FastifyInstance) {
   app.post('/equipment', createEquipment)
-  app.patch('/equipment', updateEquipment)
-  app.get('/equipment', getEquipment)
+  app.patch('/equipment/:id', updateEquipment)
+  app.get('/equipment/:id', getEquipment)
   app.get('/equipments', getEquipments)
-  app.delete('/equipment', deleteEquipment)
+  app.delete('/equipment/:id', deleteEquipment)
 
   app.post('/panorama', createPanorama)
-  app.patch('/panorama', updatePanorama)
-  app.get('/panorama', getPanorama)
+  app.patch('/panorama/:id', updatePanorama)
+  app.get('/panorama/:id', getPanorama)
   app.get('/panoramas', getPanoramas)
-  app.delete('/panorama', deletePanorama)
+  app.delete('/panorama/:id', deletePanorama)
 
   app.post('/image', uploadImage)
   app.delete('/image', deleteImage)

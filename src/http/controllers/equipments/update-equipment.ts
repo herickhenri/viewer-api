@@ -9,24 +9,24 @@ export async function updateEquipment(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  const equipmentBodySchema = z.object({
+  const equipmentsParamsSchema = z.object({
     id: z.string(),
-    data: z.object({
-      tag: z.string().toUpperCase().optional(),
-      name: z.string().optional(),
-      description: z.string().optional(),
-      photos: z
-        .array(
-          z.object({
-            key: z.string(),
-            link: z.string(),
-          }),
-        )
-        .optional(),
-    }),
   })
-
-  const { id, data } = equipmentBodySchema.parse(request.body)
+  const equipmentBodySchema = z.object({
+    tag: z.string().toUpperCase().optional(),
+    name: z.string().optional(),
+    description: z.string().optional(),
+    photos: z
+      .array(
+        z.object({
+          key: z.string(),
+          link: z.string(),
+        }),
+      )
+      .optional(),
+  })
+  const { id } = equipmentsParamsSchema.parse(request.params)
+  const data = equipmentBodySchema.parse(request.body)
   try {
     const updateEquipmentUseCases = makeUpdateEquipmentUseCases()
 

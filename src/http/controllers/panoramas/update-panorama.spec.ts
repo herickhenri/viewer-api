@@ -25,8 +25,8 @@ describe('Update Panorama (e2e)', () => {
     }
 
     const response = await request(app.server)
-      .patch(`/panorama`)
-      .send({ id, data: updatePanorama })
+      .patch(`/panorama/${id}`)
+      .send(updatePanorama)
 
     expect(response.statusCode).toEqual(200)
     expect(response.body.panorama.name).toEqual('panorama-2')

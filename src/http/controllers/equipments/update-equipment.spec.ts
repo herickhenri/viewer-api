@@ -31,8 +31,8 @@ describe('Update Equipment (e2e)', () => {
     }
 
     const response = await request(app.server)
-      .patch(`/equipment`)
-      .send({ id, data: updateEquipment })
+      .patch(`/equipment/${id}`)
+      .send(updateEquipment)
 
     expect(response.statusCode).toEqual(200)
     expect(response.body.equipment.name).toEqual('Bomba de condensado')

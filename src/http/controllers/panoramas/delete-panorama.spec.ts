@@ -21,7 +21,7 @@ describe('Delete Panorama (e2e)', () => {
     })
     const { id }: { id: string } = createResponse.body.panorama
 
-    const response = await request(app.server).delete(`/panorama`).query({ id })
+    const response = await request(app.server).delete(`/panorama/${id}`)
 
     expect(response.statusCode).toEqual(204)
   })
