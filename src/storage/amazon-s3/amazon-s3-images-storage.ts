@@ -1,4 +1,4 @@
-import { File, Image, ImagesStorage } from '../images-storage'
+import { File, ImagesStorage } from '../images-storage'
 import { randomUUID } from 'node:crypto'
 import S3Client from 'aws-sdk/clients/s3'
 import { env } from '@/env'
@@ -45,28 +45,26 @@ export class AmazonS3ImagesStorage implements ImagesStorage {
   }
 
   async uploadMany(files: File[]) {
-    const images: Image[] = []
+    const images = await Promise.all(
+      files.map(async (file) => {
+        const fileName = `${file.name}-${randomUUID()}`
 
-    files.forEach(async (file) => {
-      const fileName = `${file.name}-${randomUUID()}`
+        const uploadParams = {
+          Bucket: env.AWS_BUCKET_NAME,
+          Key: fileName,
+          Body: file.buffer,
+          ACL: 'public-read',
+          ContentType: file.contentType || undefined,
+        }
 
-      const uploadParams = {
-        Bucket: env.AWS_BUCKET_NAME,
-        Key: fileName,
-        Body: file.buffer,
-        ACL: 'public-read',
-        ContentType: file.contentType || undefined,
-      }
+        const { Location: link, Key: key } = await this.s3Client
+          .upload(uploadParams)
+          .promise()
 
-      const { Location: link, Key: key } = await this.s3Client
-        .upload(uploadParams)
-        .promise()
-
-      const image = { key, link, name: fileName }
-
-      images.push(image)
-    })
-
+        const image = { key, link, name: fileName }
+        return image
+      }),
+    )
     return images
   }
 

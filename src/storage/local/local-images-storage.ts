@@ -62,6 +62,9 @@ export class LocalImagesStorage implements ImagesStorage {
           console.log(err)
         }
       })
+
+      const image = { name, key, link: filePath }
+      images.push(image)
     })
 
     return images

@@ -18,7 +18,8 @@
     "test:e2e": "vitest run --dir src/http",
     "test:e2e:watch": "vitest --dir src/http",
     "test:coverage": "vitest --coverage",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui --dir src/use-cases",
+    "test:ui:e2e": "vitest --ui --dir src/http"
   },
   "author": "",
   "license": "ISC",
@@ -44,6 +45,7 @@
     "aws-sdk": "2.1543.0",
     "dotenv": "16.3.1",
     "fastify": "4.25.2",
+    "form-auto-content": "3.2.1",
     "zod": "3.22.4"
   }
 }

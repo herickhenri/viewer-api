@@ -19,10 +19,10 @@ describe('Upload Image Use Case', () => {
     const { image } = await sut.execute({
       buffer,
       contentType: 'image/png',
-      name: 'image-1',
+      name: 'upload-image-test',
     })
 
-    expect(image.name).toEqual('image-1')
+    expect(image.name).toEqual('upload-image-test')
 
     // reset tmp
     localImagesStorage.delete(image.key)
