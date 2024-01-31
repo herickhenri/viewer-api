@@ -13,7 +13,7 @@ describe('Get Equipments Use Case', () => {
   })
 
   it('shoud be able to get equipments', async () => {
-    await createEquipment(equipmentsRepository)
+    await createEquipment({ equipmentsRepository })
 
     const { equipments } = await sut.execute()
 

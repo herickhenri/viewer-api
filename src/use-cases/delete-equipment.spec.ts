@@ -14,7 +14,7 @@ describe('Delete Equipment Use Case', () => {
   })
 
   it('shoud be able to delete equipment', async () => {
-    const { id } = await createEquipment(equipmentsRepository)
+    const { id } = await createEquipment({ equipmentsRepository })
 
     await sut.execute({ id })
 

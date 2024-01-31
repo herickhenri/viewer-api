@@ -14,7 +14,7 @@ describe('Get Equipment Use Case', () => {
   })
 
   it('shoud be able to get equipment by id', async () => {
-    const { id } = await createEquipment(equipmentsRepository)
+    const { id } = await createEquipment({ equipmentsRepository })
 
     const { equipment } = await sut.execute({ id })
 

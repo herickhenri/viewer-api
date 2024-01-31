@@ -10,7 +10,7 @@ export async function createEquipment(
 ) {
   const equipmentBodySchema = z.object({
     tag: z.string().toUpperCase(),
-    name: z.string(),
+    name: z.string().min(1),
     description: z.string().optional(),
     photos: z
       .array(
@@ -22,9 +22,9 @@ export async function createEquipment(
       .optional(),
   })
 
-  const data = equipmentBodySchema.parse(request.body)
-
   try {
+    const data = equipmentBodySchema.parse(request.body)
+
     const createEquipmentUseCases = makeCreateEquipmentUseCases()
 
     const equipment = await createEquipmentUseCases.execute(data)

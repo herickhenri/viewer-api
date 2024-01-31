@@ -16,7 +16,7 @@ describe('Update Equipment Use Case', () => {
   })
 
   it('shoud be able to update equipment', async () => {
-    const { id } = await createEquipment(equipmentsRepository)
+    const { id } = await createEquipment({ equipmentsRepository })
     const updateEquipment = {
       name: 'Equipment-2',
       tag: 'I-1111-BB-333',
@@ -48,17 +48,18 @@ describe('Update Equipment Use Case', () => {
   })
 
   it('shoud not be able update equipment with an existing tag', async () => {
-    const tag = 'I-1501-BB-101'
-
-    const { id } = await equipmentsRepository.create({
-      name: 'Bomba de lama',
-      tag,
-      description: 'Bomba de lama para o LMCD 1',
+    await createEquipment({
+      equipmentsRepository,
+      equipmentData: { name: 'equipment-1', tag: 'I-1111-BB-222' },
+    })
+    const { id } = await createEquipment({
+      equipmentsRepository,
+      equipmentData: { name: 'equipment-2', tag: 'I-0000-AA-333' },
     })
 
     await expect(() =>
       sut.execute({
-        data: { tag },
+        data: { tag: 'I-1111-BB-222' },
         id,
       }),
     ).rejects.toBeInstanceOf(EquipmentAlreadyExistsError)
@@ -128,10 +129,21 @@ describe('Update Equipment Use Case', () => {
   })
 
   it('shoud be able update equipment with photos empty', async () => {
-    const { id } = await createEquipment(equipmentsRepository)
+    const { id } = await createEquipment({ equipmentsRepository })
 
     const { equipment } = await sut.execute({ data: { photos: [] }, id })
 
     expect(equipment.photos).toStrictEqual([])
+  })
+
+  it('shoud be able update equipment with the same tag', async () => {
+    const { id, tag } = await createEquipment({ equipmentsRepository })
+
+    const { equipment } = await sut.execute({
+      data: { tag, name: 'new-name' },
+      id,
+    })
+
+    expect(equipment.name).toEqual('new-name')
   })
 })

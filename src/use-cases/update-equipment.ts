@@ -34,7 +34,9 @@ export class UpdateEquipmentUseCases {
         data.tag,
       )
 
-      if (equipmentWithTheSameTag) {
+      const equipmentChangeTag = equipmentFound !== equipmentWithTheSameTag
+
+      if (equipmentWithTheSameTag && equipmentChangeTag) {
         throw new EquipmentAlreadyExistsError()
       }
 
