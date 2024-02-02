@@ -137,10 +137,17 @@ describe('Update Equipment Use Case', () => {
   })
 
   it('shoud be able update equipment with the same tag', async () => {
-    const { id, tag } = await createEquipment({ equipmentsRepository })
+    const tag = 'A-0000-BB-111'
+    const { id } = await createEquipment({
+      equipmentsRepository,
+      equipmentData: {
+        name: 'equipment-1',
+        tag,
+      },
+    })
 
     const { equipment } = await sut.execute({
-      data: { tag, name: 'new-name' },
+      data: { name: 'new-name', tag },
       id,
     })
 

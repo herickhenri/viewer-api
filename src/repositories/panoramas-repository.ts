@@ -5,8 +5,8 @@ export type Panorama = {
   name: string
   image_key: string
   image_link: string
-  gps_x: Prisma.Decimal
-  gps_y: Prisma.Decimal
+  gps_x?: Prisma.Decimal
+  gps_y?: Prisma.Decimal
   markings?: {
     coord_x: number
     coord_y: number
@@ -18,8 +18,8 @@ export type PanoramaInput = {
   name: string
   image_key: string
   image_link: string
-  gps_x: number
-  gps_y: number
+  gps_x?: number
+  gps_y?: number
   markings?: {
     coord_x: number
     coord_y: number

@@ -94,7 +94,10 @@ export class PrismaEquipmentsRepository implements EquipmentsRepository {
         tag,
         description,
         photos: {
-          create: photos,
+          deleteMany: {
+            equipmentId: id,
+          },
+          create: photos || [],
         },
       },
       include: {

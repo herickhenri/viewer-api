@@ -8,7 +8,6 @@ export async function uploadImage(
   reply: FastifyReply,
 ) {
   const data = await request.file()
-  console.log(data)
 
   if (!data) {
     throw new UploadingImageError()
@@ -35,7 +34,6 @@ export async function uploadImage(
     if (err instanceof UnacceptedFileFormat) {
       return reply.status(400).send({ message: err.message })
     }
-    console.log(err)
     throw err
   }
 }

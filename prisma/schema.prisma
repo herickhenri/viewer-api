@@ -35,8 +35,8 @@ model Panorama {
   name       String
   image_key  String
   image_link String
-  gps_x      Decimal
-  gps_y      Decimal
+  gps_x      Decimal?
+  gps_y      Decimal?
   markings   marking[]
 
   @@map("panoramas")

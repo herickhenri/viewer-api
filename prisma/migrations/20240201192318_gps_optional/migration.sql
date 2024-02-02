@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "panoramas" ALTER COLUMN "gps_x" DROP NOT NULL,
+ALTER COLUMN "gps_y" DROP NOT NULL;

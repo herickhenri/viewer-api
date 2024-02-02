@@ -10,8 +10,8 @@ export async function createPanorama(
     name: z.string(),
     image_key: z.string(),
     image_link: z.string(),
-    gps_x: z.number(),
-    gps_y: z.number(),
+    gps_x: z.number().optional(),
+    gps_y: z.number().optional(),
     markings: z
       .array(
         z.object({
