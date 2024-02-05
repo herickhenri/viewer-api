@@ -27,7 +27,7 @@ describe('Get Equipments (e2e)', () => {
       })
     const equipmentCreated = createResponse.body.equipment
 
-    const response = await request(app.server).get(`/equipments`)
+    const response = await request(app.server).get(`/all-equipments`)
     expect(response.statusCode).toEqual(200)
     expect([equipmentCreated]).toEqual(response.body.equipments)
   })

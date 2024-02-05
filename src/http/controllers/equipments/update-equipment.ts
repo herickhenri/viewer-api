@@ -25,8 +25,10 @@ export async function updateEquipment(
       )
       .optional(),
   })
+
   const { id } = equipmentsParamsSchema.parse(request.params)
   const data = equipmentBodySchema.parse(request.body)
+
   try {
     const updateEquipmentUseCases = makeUpdateEquipmentUseCases()
 

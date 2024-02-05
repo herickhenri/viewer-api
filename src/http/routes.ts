@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify'
 
 import { createEquipment } from './controllers/equipments/create-equipment'
 import { getEquipment } from './controllers/equipments/get-equipment'
-import { getEquipments } from './controllers/equipments/get-equipments'
+import { getAllEquipments } from './controllers/equipments/get-all-equipments'
 import { updateEquipment } from './controllers/equipments/update-equipment'
 import { deleteEquipment } from './controllers/equipments/delete-equipment'
 
@@ -21,7 +21,7 @@ export async function appRoutes(app: FastifyInstance) {
   app.post('/equipment', createEquipment)
   app.patch('/equipment/:id', updateEquipment)
   app.get('/equipment/:id', getEquipment)
-  app.get('/equipments', getEquipments)
+  app.get('/all-equipments', getAllEquipments)
   app.delete('/equipment/:id', deleteEquipment)
 
   app.post('/panorama', createPanorama)

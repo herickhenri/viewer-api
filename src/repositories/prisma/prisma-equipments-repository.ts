@@ -46,6 +46,26 @@ export class PrismaEquipmentsRepository implements EquipmentsRepository {
     return equipment
   }
 
+  async findByIds(ids: string[]) {
+    const equipments = await prisma.equipment.findMany({
+      where: { id: { in: ids } },
+      include: {
+        photos: {
+          select: {
+            key: true,
+            link: true,
+          },
+        },
+      },
+    })
+
+    if (!equipments) {
+      return null
+    }
+
+    return equipments
+  }
+
   async findMany() {
     const equipments = await prisma.equipment.findMany({
       include: {
@@ -97,7 +117,7 @@ export class PrismaEquipmentsRepository implements EquipmentsRepository {
           deleteMany: {
             equipmentId: id,
           },
-          create: photos || [],
+          create: photos,
         },
       },
       include: {
@@ -114,6 +134,9 @@ export class PrismaEquipmentsRepository implements EquipmentsRepository {
   }
 
   async delete(id: string) {
+    await prisma.marking.deleteMany({
+      where: { equipment_id: id },
+    })
     await prisma.equipment.delete({
       where: { id },
     })

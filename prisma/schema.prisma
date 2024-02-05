@@ -46,10 +46,10 @@ model marking {
   coord_x Int
   coord_y Int
 
-  equipments   Equipment @relation(fields: [equipment_id], references: [id])
+  equipment    Equipment @relation(fields: [equipment_id], references: [id])
   equipment_id String
 
-  panoramas   Panorama @relation(fields: [panorama_id], references: [id])
+  panorama    Panorama @relation(fields: [panorama_id], references: [id])
   panorama_id String
 
   @@id([panorama_id, equipment_id])

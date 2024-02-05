@@ -1,16 +1,17 @@
 import { Prisma } from '@prisma/client'
+import { Equipment } from './equipments-repository'
 
 export type Panorama = {
   id: string
   name: string
   image_key: string
   image_link: string
-  gps_x?: Prisma.Decimal
-  gps_y?: Prisma.Decimal
+  gps_x: Prisma.Decimal | null
+  gps_y: Prisma.Decimal | null
   markings?: {
     coord_x: number
     coord_y: number
-    equipment_id: string
+    equipment: Equipment
   }[]
 }
 

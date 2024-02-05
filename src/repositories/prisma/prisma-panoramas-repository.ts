@@ -14,7 +14,7 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
           select: {
             coord_x: true,
             coord_y: true,
-            equipment_id: true,
+            equipment: true,
           },
         },
       },
@@ -34,7 +34,7 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
           select: {
             coord_x: true,
             coord_y: true,
-            equipment_id: true,
+            equipment: true,
           },
         },
       },
@@ -67,7 +67,7 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
           select: {
             coord_x: true,
             coord_y: true,
-            equipment_id: true,
+            equipment: true,
           },
         },
       },
@@ -80,13 +80,6 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
     { name, image_key, image_link, gps_x, gps_y, markings }: UpdatePanorama,
     id: string,
   ) {
-    if (markings) {
-      await prisma.marking.updateMany({
-        where: { panorama_id: id },
-        data: markings,
-      })
-    }
-
     const panorama = await prisma.panorama.update({
       where: { id },
       data: {
@@ -95,9 +88,21 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
         image_link,
         gps_x,
         gps_y,
+        markings: {
+          deleteMany: {
+            panorama_id: id,
+          },
+          create: markings,
+        },
       },
       include: {
-        markings: true,
+        markings: {
+          select: {
+            coord_x: true,
+            coord_y: true,
+            equipment: true,
+          },
+        },
       },
     })
 

@@ -27,6 +27,17 @@ export class InMemoryEquipmentsRepository implements EquipmentsRepository {
     return equipment
   }
 
+  async findByIds(ids: string[]) {
+    const equipments = this.equipments.filter((equipment) =>
+      ids.includes(equipment.id),
+    )
+
+    if (!equipments) {
+      return null
+    }
+    return equipments
+  }
+
   async findMany() {
     return this.equipments
   }

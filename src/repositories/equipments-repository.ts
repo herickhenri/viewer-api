@@ -32,6 +32,7 @@ export type UpdateEquipment = {
 export interface EquipmentsRepository {
   findByTag(tag: string): Promise<Equipment | null>
   findById(id: string): Promise<Equipment | null>
+  findByIds(ids: string[]): Promise<Equipment[] | null>
   findMany(): Promise<Equipment[]>
   create(data: EquipmentInput): Promise<Equipment>
   update(data: UpdateEquipment, id: string): Promise<Equipment>

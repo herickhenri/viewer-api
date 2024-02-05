@@ -37,8 +37,8 @@ export class InMemoryPanoramasRepository implements PanoramasRepository {
       name,
       image_key,
       image_link,
-      gps_x: new Prisma.Decimal(gps_x),
-      gps_y: new Prisma.Decimal(gps_y),
+      gps_x: gps_x ? new Prisma.Decimal(gps_x) : null,
+      gps_y: gps_y ? new Prisma.Decimal(gps_y) : null,
       markings,
     }
 
@@ -63,8 +63,8 @@ export class InMemoryPanoramasRepository implements PanoramasRepository {
       name: name || panorama.name,
       image_link: image_link || panorama.image_link,
       image_key: image_key || panorama.image_key,
-      gps_x: new Prisma.Decimal(gps_x || panorama.gps_x),
-      gps_y: new Prisma.Decimal(gps_y || panorama.gps_y),
+      gps_x: gps_x ? new Prisma.Decimal(gps_x) : panorama.gps_x,
+      gps_y: gps_y ? new Prisma.Decimal(gps_y) : panorama.gps_y,
       markings: markings || panorama.markings,
     }
 

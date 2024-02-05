@@ -20,7 +20,6 @@ export async function getEquipment(
     if (err instanceof ResourceNotFoundError) {
       return reply.status(404).send({ message: err.message })
     }
-
     throw Error
   }
 }
