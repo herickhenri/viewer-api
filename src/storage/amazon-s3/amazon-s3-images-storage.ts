@@ -16,7 +16,7 @@ export class AmazonS3ImagesStorage implements ImagesStorage {
   }
 
   async upload({ buffer, contentType, name }: File) {
-    const fileName = `${name}-${randomUUID()}`
+    const fileName = `${randomUUID()}-${name}`
 
     const uploadParams = {
       Bucket: env.AWS_BUCKET_NAME,
