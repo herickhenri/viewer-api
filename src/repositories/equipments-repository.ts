@@ -1,3 +1,5 @@
+import { Panorama } from './panoramas-repository'
+
 export type Equipment = {
   id: string
   name: string
@@ -7,6 +9,7 @@ export type Equipment = {
     key: string
     link: string
   }[]
+  panoramas?: Panorama[]
 }
 
 export type EquipmentInput = {
