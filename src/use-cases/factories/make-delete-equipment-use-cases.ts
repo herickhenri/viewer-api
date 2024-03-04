@@ -1,4 +1,4 @@
-import { DeleteEquipmentUseCases } from '../delete-equipment'
+import { DeleteEquipmentUseCases } from '../repositories/equipment/delete-equipment'
 import { PrismaEquipmentsRepository } from '../../repositories/prisma/prisma-equipments-repository'
 
 export function makeDeleteEquipmentUseCases() {

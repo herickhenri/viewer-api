@@ -1,4 +1,4 @@
-import { GetAllEquipmentsUseCases } from '../get-all-equipments'
+import { GetAllEquipmentsUseCases } from '../repositories/equipment/get-all-equipments'
 import { PrismaEquipmentsRepository } from '../../repositories/prisma/prisma-equipments-repository'
 
 export function makeGetAllEquipmentsUseCases() {

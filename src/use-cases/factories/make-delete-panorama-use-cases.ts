@@ -1,4 +1,4 @@
-import { DeletePanoramaUseCases } from '../delete-panorama'
+import { DeletePanoramaUseCases } from '../repositories/panorama/delete-panorama'
 import { PrismaPanoramasRepository } from '../../repositories/prisma/prisma-panoramas-repository'
 
 export function makeDeletePanoramaUseCases() {

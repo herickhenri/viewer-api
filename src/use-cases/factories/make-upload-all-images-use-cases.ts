@@ -1,9 +1,10 @@
-import { AmazonS3ImagesStorage } from '@/storage/amazon-s3/amazon-s3-images-storage'
-import { UploadAllImagesUseCases } from '../upload-all-images'
+import { CloudflareR2ImagesStorage } from '@/storage/cloudflare-r2/cloudflare-r2-images-storage'
+import { UploadAllImagesUseCases } from '../storage/upload-all-images'
 
 export function makeUploadAllImagesUseCases() {
-  const amazonS3ImagesStorage = new AmazonS3ImagesStorage()
-  const useCase = new UploadAllImagesUseCases(amazonS3ImagesStorage)
+  const imagesStorage = new CloudflareR2ImagesStorage()
+
+  const useCase = new UploadAllImagesUseCases(imagesStorage)
 
   return useCase
 }

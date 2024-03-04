@@ -1,4 +1,4 @@
-import { CreatePanoramaUseCases } from '../create-panorama'
+import { CreatePanoramaUseCases } from '../repositories/panorama/create-panorama'
 import { PrismaPanoramasRepository } from '../../repositories/prisma/prisma-panoramas-repository'
 
 export function makeCreatePanoramaUseCases() {

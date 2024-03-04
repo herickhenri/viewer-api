@@ -4,10 +4,12 @@ import { z } from 'zod'
 const envSchema = z.object({
   NODE_ENV: z.enum(['dev', 'test', 'production']).default('dev'),
   PORT: z.coerce.number().default(3333),
-  AWS_ACESS_KEY_ID: z.string(),
-  AWS_SECRET_ACESS_KEY: z.string(),
-  AWS_DEFAULT_REGION: z.string(),
-  AWS_BUCKET_NAME: z.string(),
+  DATABASE_URL: z.string().url(),
+  CLOUDFLARE_ENDPOINT: z.string().url(),
+  CLOUDFLARE_ACCESS_KEY_ID: z.string(),
+  CLOUDFLARE_SECRET_ACCESS_KEY: z.string(),
+  CLOUDFLARE_BUCKET_NAME: z.string(),
+  CLOUDFLARE_PUBLIC_URL: z.string().url(),
 })
 
 const _env = envSchema.safeParse(process.env)

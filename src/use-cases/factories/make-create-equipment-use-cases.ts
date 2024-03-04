@@ -1,4 +1,4 @@
-import { CreateEquipmentUseCases } from '../create-equipment'
+import { CreateEquipmentUseCases } from '../repositories/equipment/create-equipment'
 import { PrismaEquipmentsRepository } from '../../repositories/prisma/prisma-equipments-repository'
 
 export function makeCreateEquipmentUseCases() {

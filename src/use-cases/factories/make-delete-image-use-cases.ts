@@ -1,9 +1,10 @@
-import { AmazonS3ImagesStorage } from '@/storage/amazon-s3/amazon-s3-images-storage'
-import { DeleteImageUseCases } from '../delete-image'
+import { CloudflareR2ImagesStorage } from '@/storage/cloudflare-r2/cloudflare-r2-images-storage'
+import { DeleteImageUseCases } from '../storage/delete-image'
 
 export function makeDeleteImageUseCases() {
-  const amazonS3ImagesStorage = new AmazonS3ImagesStorage()
-  const useCase = new DeleteImageUseCases(amazonS3ImagesStorage)
+  const imagesStorage = new CloudflareR2ImagesStorage()
+
+  const useCase = new DeleteImageUseCases(imagesStorage)
 
   return useCase
 }
