@@ -31,6 +31,7 @@ export class InMemoryPanoramasRepository implements PanoramasRepository {
     gps_x,
     gps_y,
     markings,
+    links,
   }: PanoramaInput) {
     const panorama = {
       id: randomUUID(),
@@ -40,6 +41,7 @@ export class InMemoryPanoramasRepository implements PanoramasRepository {
       gps_x: gps_x ? new Prisma.Decimal(gps_x) : null,
       gps_y: gps_y ? new Prisma.Decimal(gps_y) : null,
       markings,
+      links,
     }
 
     this.panoramas.push(panorama)

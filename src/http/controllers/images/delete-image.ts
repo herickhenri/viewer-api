@@ -12,9 +12,9 @@ export async function deleteImage(
 
   const { key } = deleteImageParamsSchema.parse(request.params)
 
-  const createEquipmentUseCases = makeDeleteImageUseCases()
+  const deleteImageUseCases = makeDeleteImageUseCases()
 
-  await createEquipmentUseCases.execute({ key })
+  await deleteImageUseCases.execute({ key })
 
   return reply.status(204).send()
 }

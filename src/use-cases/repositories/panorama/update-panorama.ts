@@ -21,6 +21,16 @@ export class UpdatePanoramaUseCases {
     data,
     id,
   }: updatePanoramaRequest): Promise<updatePanoramaResponse> {
+    data.links?.forEach((link) => {
+      const panoramaFound = this.panoramasRepository.findById(
+        link.panorama_connect_id,
+      )
+
+      if (!panoramaFound) {
+        throw new ResourceNotFoundError()
+      }
+    })
+
     const panoramaFound = await this.panoramasRepository.findById(id)
 
     if (!panoramaFound) {

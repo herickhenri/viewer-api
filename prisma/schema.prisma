@@ -38,6 +38,7 @@ model Panorama {
   gps_x      Decimal?
   gps_y      Decimal?
   markings   marking[]
+  links      Link[]
 
   @@map("panoramas")
 }
@@ -54,4 +55,17 @@ model marking {
 
   @@id([panorama_id, equipment_id])
   @@map("markings")
+}
+
+model Link {
+  id String @id @default(cuid())
+
+  coord_x             Int
+  coord_y             Int
+  panorama_connect_id String
+
+  Panorama    Panorama @relation(fields: [panorama_id], references: [id])
+  panorama_id String
+
+  @@map("links")
 }

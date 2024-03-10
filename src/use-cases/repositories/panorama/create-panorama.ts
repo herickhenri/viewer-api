@@ -1,3 +1,4 @@
+import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found-error'
 import {
   Panorama,
   PanoramaInput,
@@ -11,7 +12,7 @@ interface createPanoramaResponse {
 }
 
 export class CreatePanoramaUseCases {
-  constructor(private PanoramasRepository: PanoramasRepository) {}
+  constructor(private panoramasRepository: PanoramasRepository) {}
 
   async execute({
     name,
@@ -20,8 +21,19 @@ export class CreatePanoramaUseCases {
     gps_x,
     gps_y,
     markings,
+    links,
   }: createPanoramaRequest): Promise<createPanoramaResponse> {
-    const panorama = await this.PanoramasRepository.create({
+    links?.forEach((link) => {
+      const panoramaFound = this.panoramasRepository.findById(
+        link.panorama_connect_id,
+      )
+
+      if (!panoramaFound) {
+        throw new ResourceNotFoundError()
+      }
+    })
+
+    const panorama = await this.panoramasRepository.create({
       name,
       image_key,
       image_link,

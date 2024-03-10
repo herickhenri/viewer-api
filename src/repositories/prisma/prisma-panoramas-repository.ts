@@ -26,6 +26,7 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
             },
           },
         },
+        links: true,
       },
     })
 
@@ -55,6 +56,7 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
             },
           },
         },
+        links: true,
       },
     })
 
@@ -68,6 +70,7 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
     gps_x,
     gps_y,
     markings,
+    links,
   }: PanoramaInput) {
     const panorama = await prisma.panorama.create({
       data: {
@@ -79,6 +82,9 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
         markings: {
           create: markings,
         },
+        links: {
+          create: links,
+        },
       },
       include: {
         markings: {
@@ -97,6 +103,7 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
             },
           },
         },
+        links: true,
       },
     })
 
@@ -104,9 +111,28 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
   }
 
   async update(
-    { name, image_key, image_link, gps_x, gps_y, markings }: UpdatePanorama,
+    {
+      name,
+      image_key,
+      image_link,
+      gps_x,
+      gps_y,
+      markings,
+      links,
+    }: UpdatePanorama,
     id: string,
   ) {
+    if (links) {
+      await prisma.link.deleteMany({
+        where: { panorama_id: id },
+      })
+    }
+    if (markings) {
+      await prisma.marking.deleteMany({
+        where: { panorama_id: id },
+      })
+    }
+
     const panorama = await prisma.panorama.update({
       where: { id },
       data: {
@@ -116,10 +142,10 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
         gps_x,
         gps_y,
         markings: {
-          deleteMany: {
-            panorama_id: id,
-          },
           create: markings,
+        },
+        links: {
+          create: links,
         },
       },
       include: {
@@ -139,6 +165,7 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
             },
           },
         },
+        links: true,
       },
     })
 
@@ -147,6 +174,9 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
 
   async delete(id: string) {
     await prisma.marking.deleteMany({
+      where: { panorama_id: id },
+    })
+    await prisma.link.deleteMany({
       where: { panorama_id: id },
     })
 

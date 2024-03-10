@@ -21,6 +21,15 @@ export async function createPanorama(
         }),
       )
       .optional(),
+    links: z
+      .array(
+        z.object({
+          coord_x: z.number(),
+          coord_y: z.number(),
+          panorama_connect_id: z.string(),
+        }),
+      )
+      .optional(),
   })
 
   const data = panoramaBodySchema.parse(request.body)

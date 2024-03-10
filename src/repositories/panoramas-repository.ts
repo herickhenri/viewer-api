@@ -13,6 +13,11 @@ export type Panorama = {
     coord_y: number
     equipment: Equipment
   }[]
+  links?: {
+    coord_x: number
+    coord_y: number
+    panorama_connect_id: string
+  }[]
 }
 
 export type PanoramaInput = {
@@ -26,6 +31,11 @@ export type PanoramaInput = {
     coord_y: number
     equipment_id: string
   }[]
+  links?: {
+    coord_x: number
+    coord_y: number
+    panorama_connect_id: string
+  }[]
 }
 
 export type UpdatePanorama = {
@@ -38,6 +48,11 @@ export type UpdatePanorama = {
     coord_x: number
     coord_y: number
     equipment_id: string
+  }[]
+  links?: {
+    coord_x: number
+    coord_y: number
+    panorama_connect_id: string
   }[]
 }
 

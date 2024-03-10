@@ -122,6 +122,12 @@ export class PrismaEquipmentsRepository implements EquipmentsRepository {
     { name, tag, description, photos }: UpdateEquipment,
     id: string,
   ) {
+    if (photos) {
+      await prisma.photo.deleteMany({
+        where: { equipmentId: id },
+      })
+    }
+
     const equipment = await prisma.equipment.update({
       where: { id },
       data: {
@@ -129,9 +135,6 @@ export class PrismaEquipmentsRepository implements EquipmentsRepository {
         tag,
         description,
         photos: {
-          deleteMany: {
-            equipmentId: id,
-          },
           create: photos,
         },
       },
