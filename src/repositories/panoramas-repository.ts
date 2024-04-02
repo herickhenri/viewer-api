@@ -1,5 +1,4 @@
 import { Prisma } from '@prisma/client'
-import { Equipment } from './equipments-repository'
 
 export type Panorama = {
   id: string
@@ -11,7 +10,7 @@ export type Panorama = {
   markings?: {
     coord_x: number
     coord_y: number
-    equipment: Equipment
+    equipment_id: string
   }[]
   links?: {
     coord_x: number
@@ -56,10 +55,20 @@ export type UpdatePanorama = {
   }[]
 }
 
+export type Link = {
+  panorama_connect_id: string
+  panorama_id: string
+  coord_x: number
+  coord_y: number
+}
+
+export type Connection = [Link, Link]
+
 export interface PanoramasRepository {
   findById(id: string): Promise<Panorama | null>
   findMany(): Promise<Panorama[]>
   create(data: PanoramaInput): Promise<Panorama>
   update(data: UpdatePanorama, id: string): Promise<Panorama>
   delete(id: string): Promise<void>
+  createConnection(connection: Connection): Promise<void>
 }

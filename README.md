@@ -1,3 +1,34 @@
+# API APLICATIVO LOCALIZA AI
+
+### Iniciando a aplicação
+```node
+  npm install
+```
+```node
+  docker compose up
+```
+Para inicar a aplicação
+```node
+  npm run build
+```
+```node
+  npm run start
+```
+Para inicar no modo desenvolvedor
+```node
+  npm run dev
+```
+
+### Teste
+Para executar os testes unitários
+```node
+  npm run test
+```
+Para executar os testes e2e
+```node
+  npm run test:e2e
+```
+
 ### RFs (Requisitos funcionais)
 [x] Deve ser possível criar um equipamento
 [x] Deve ser possível buscar um equipamento pelo id
@@ -15,4 +46,3 @@
 
 ### RNFs (Requisitos não funcionais)
 [x] A tag deve possuir um formato específico
-[] Todos os equipamentos devem estar paginados com 20 items por página

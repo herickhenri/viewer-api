@@ -58,8 +58,6 @@ model marking {
 }
 
 model Link {
-  id String @id @default(cuid())
-
   coord_x             Int
   coord_y             Int
   panorama_connect_id String
@@ -67,5 +65,6 @@ model Link {
   Panorama    Panorama @relation(fields: [panorama_id], references: [id])
   panorama_id String
 
+  @@id([panorama_id, panorama_connect_id])
   @@map("links")
 }

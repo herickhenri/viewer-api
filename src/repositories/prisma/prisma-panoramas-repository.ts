@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import {
+  Connection,
   PanoramaInput,
   PanoramasRepository,
   UpdatePanorama,
@@ -14,16 +15,7 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
           select: {
             coord_x: true,
             coord_y: true,
-            equipment: {
-              include: {
-                photos: {
-                  select: {
-                    key: true,
-                    link: true,
-                  },
-                },
-              },
-            },
+            equipment_id: true,
           },
         },
         links: true,
@@ -44,16 +36,7 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
           select: {
             coord_x: true,
             coord_y: true,
-            equipment: {
-              include: {
-                photos: {
-                  select: {
-                    key: true,
-                    link: true,
-                  },
-                },
-              },
-            },
+            equipment_id: true,
           },
         },
         links: true,
@@ -91,16 +74,7 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
           select: {
             coord_x: true,
             coord_y: true,
-            equipment: {
-              include: {
-                photos: {
-                  select: {
-                    key: true,
-                    link: true,
-                  },
-                },
-              },
-            },
+            equipment_id: true,
           },
         },
         links: true,
@@ -153,16 +127,7 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
           select: {
             coord_x: true,
             coord_y: true,
-            equipment: {
-              include: {
-                photos: {
-                  select: {
-                    key: true,
-                    link: true,
-                  },
-                },
-              },
-            },
+            equipment_id: true,
           },
         },
         links: true,
@@ -182,6 +147,39 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
 
     await prisma.panorama.delete({
       where: { id },
+    })
+  }
+
+  async createConnection(connection: Connection) {
+    connection.forEach(async (linkData) => {
+      // Check if the connection already exists
+      const connectionAlreadyExists = await prisma.link.findUnique({
+        where: {
+          panorama_id_panorama_connect_id: {
+            panorama_connect_id: linkData.panorama_connect_id,
+            panorama_id: linkData.panorama_id,
+          },
+        },
+      })
+
+      // If the connection exists, it is updated, if it does not exist, the connection is created
+      if (connectionAlreadyExists) {
+        await prisma.link.update({
+          where: {
+            panorama_id_panorama_connect_id: {
+              panorama_connect_id: linkData.panorama_connect_id,
+              panorama_id: linkData.panorama_id,
+            },
+          },
+          data: linkData,
+          include: { Panorama: true },
+        })
+      } else {
+        await prisma.link.create({
+          data: linkData,
+          include: { Panorama: true },
+        })
+      }
     })
   }
 }

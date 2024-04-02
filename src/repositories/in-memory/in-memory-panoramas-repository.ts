@@ -1,5 +1,7 @@
 import { Prisma } from '@prisma/client'
 import {
+  Connection,
+  Link,
   Panorama,
   PanoramaInput,
   PanoramasRepository,
@@ -77,5 +79,40 @@ export class InMemoryPanoramasRepository implements PanoramasRepository {
 
   async delete(id: string) {
     this.panoramas = this.panoramas.filter((panorama) => panorama.id !== id)
+  }
+
+  async createConnection(connection: Connection) {
+    function updatePanorama(panorama: Panorama, link: Link) {
+      // Remove the link if it already exists
+      const newLinks = panorama.links?.filter(
+        (linkCheck) =>
+          linkCheck.panorama_connect_id !== link.panorama_connect_id,
+      )
+
+      // adds the new link to the panorama
+      const panoramaUpdated: Panorama = {
+        ...panorama,
+        links: newLinks ? [...newLinks, link] : [link],
+      }
+
+      return panoramaUpdated
+    }
+
+    const [firstLink, secondLink] = connection
+    const firstIndex = this.panoramas.findIndex(
+      (panorama) => panorama.id === firstLink.panorama_id,
+    )
+    const secondIndex = this.panoramas.findIndex(
+      (panorama) => panorama.id === secondLink.panorama_id,
+    )
+
+    const firstPanorama = this.panoramas[firstIndex]
+    const secondPanorama = this.panoramas[secondIndex]
+
+    const firstPanoramaUpdated = updatePanorama(firstPanorama, firstLink)
+    const secondPanoramaUpdated = updatePanorama(secondPanorama, secondLink)
+
+    this.panoramas.splice(firstIndex, 1, firstPanoramaUpdated)
+    this.panoramas.splice(secondIndex, 1, secondPanoramaUpdated)
   }
 }
