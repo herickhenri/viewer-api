@@ -23,7 +23,7 @@ export async function createConnection(
 
     await createConnectionUseCases.execute(data.connection)
 
-    return reply.status(201)
+    return reply.status(201).send()
   } catch (err) {
     if (err instanceof ResourceNotFoundError) {
       return reply.status(404).send({ message: err.message })

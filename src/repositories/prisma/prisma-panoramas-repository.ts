@@ -172,12 +172,10 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
             },
           },
           data: linkData,
-          include: { Panorama: true },
         })
       } else {
         await prisma.link.create({
           data: linkData,
-          include: { Panorama: true },
         })
       }
     })
