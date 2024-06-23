@@ -13,7 +13,7 @@ app.register(cors, {
 app.register(fastifyMultipart, {
   limits: {
     files: 10,
-    fileSize: 5000000,
+    fileSize: 15000000,
   },
 })
 app.register(appRoutes)

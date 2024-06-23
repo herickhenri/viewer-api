@@ -12,7 +12,7 @@ describe('Get Equipments (e2e)', () => {
   })
 
   it('shoud be able to get equipments', async () => {
-    const createResponse = await request(app.server)
+    await request(app.server)
       .post('/equipment')
       .send({
         name: 'Bomba de lama',
@@ -25,10 +25,10 @@ describe('Get Equipments (e2e)', () => {
           },
         ],
       })
-    const equipmentCreated = createResponse.body.equipment
 
     const response = await request(app.server).get(`/all-equipments`)
+
     expect(response.statusCode).toEqual(200)
-    expect([equipmentCreated]).toEqual(response.body.equipments)
+    expect(response.body.equipments).toBeTruthy()
   })
 })

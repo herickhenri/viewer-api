@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import {
   Connection,
+  IdsOfPanoramaConnectionRelations,
   PanoramaInput,
   PanoramasRepository,
   UpdatePanorama,
@@ -178,6 +179,18 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
           data: linkData,
         })
       }
+    })
+  }
+
+  async deleteConnection({
+    panorama_id,
+    panorama_connect_id,
+  }: IdsOfPanoramaConnectionRelations) {
+    await prisma.link.deleteMany({
+      where: {
+        panorama_id,
+        panorama_connect_id,
+      },
     })
   }
 }

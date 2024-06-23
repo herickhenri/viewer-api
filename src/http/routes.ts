@@ -17,6 +17,7 @@ import { deleteImage } from './controllers/images/delete-image'
 import { uploadAllImages } from './controllers/images/upload-all-images'
 import { deleteAllImages } from './controllers/images/delete-all-images'
 import { createConnection } from './controllers/panoramas/create-connection'
+import { deleteConnection } from './controllers/panoramas/delete-connection'
 
 export async function appRoutes(app: FastifyInstance) {
   app.post('/equipment', createEquipment)
@@ -31,6 +32,7 @@ export async function appRoutes(app: FastifyInstance) {
   app.get('/panoramas', getPanoramas)
   app.delete('/panorama/:id', deletePanorama)
   app.post('/connection', createConnection)
+  app.delete('/connection', deleteConnection)
 
   app.post('/image', uploadImage)
   app.delete('/image/:key', deleteImage)

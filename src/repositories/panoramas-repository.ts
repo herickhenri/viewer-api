@@ -64,6 +64,11 @@ export type Link = {
 
 export type Connection = [Link, Link]
 
+export type IdsOfPanoramaConnectionRelations = {
+  panorama_id: string
+  panorama_connect_id: string
+}
+
 export interface PanoramasRepository {
   findById(id: string): Promise<Panorama | null>
   findMany(): Promise<Panorama[]>
@@ -71,4 +76,7 @@ export interface PanoramasRepository {
   update(data: UpdatePanorama, id: string): Promise<Panorama>
   delete(id: string): Promise<void>
   createConnection(connection: Connection): Promise<void>
+  deleteConnection(
+    idsOfPanoramaConnectionRelations: IdsOfPanoramaConnectionRelations,
+  ): Promise<void>
 }

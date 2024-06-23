@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client'
 import {
   Connection,
+  IdsOfPanoramaConnectionRelations,
   Link,
   Panorama,
   PanoramaInput,
@@ -114,5 +115,29 @@ export class InMemoryPanoramasRepository implements PanoramasRepository {
 
     this.panoramas.splice(firstIndex, 1, firstPanoramaUpdated)
     this.panoramas.splice(secondIndex, 1, secondPanoramaUpdated)
+  }
+
+  async deleteConnection({
+    panorama_connect_id,
+    panorama_id,
+  }: IdsOfPanoramaConnectionRelations) {
+    this.panoramas = this.panoramas.map((panorama) => {
+      const newPanorama = panorama
+
+      if (panorama.id === panorama_id) {
+        newPanorama.links =
+          panorama.links?.filter(
+            (link) => link.panorama_connect_id !== panorama_connect_id,
+          ) || newPanorama.links
+      }
+      if (panorama.id === panorama_connect_id) {
+        newPanorama.links =
+          panorama.links?.filter(
+            (link) => link.panorama_connect_id !== panorama_id,
+          ) || newPanorama.links
+      }
+
+      return newPanorama
+    })
   }
 }
