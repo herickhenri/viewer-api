@@ -1,3 +1,4 @@
+import { Note } from './notes-repository'
 import { Panorama } from './panoramas-repository'
 
 export type Equipment = {
@@ -10,6 +11,7 @@ export type Equipment = {
     link: string
   }[]
   panoramas?: Panorama[]
+  notes?: Note[]
 }
 
 export type EquipmentInput = {

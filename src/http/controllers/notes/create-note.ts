@@ -11,6 +11,7 @@ export async function createNote(request: FastifyRequest, reply: FastifyReply) {
     equipment_tag: z.string(),
     author: z.string(),
     opportunity: z.number(),
+    equipmentId: z.string().nullable().default(null),
   })
 
   const data = noteBodySchema.parse(request.body)

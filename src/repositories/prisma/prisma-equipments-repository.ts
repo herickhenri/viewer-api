@@ -85,6 +85,7 @@ export class PrismaEquipmentsRepository implements EquipmentsRepository {
             link: true,
           },
         },
+        notes: true,
       },
     })
     return equipments

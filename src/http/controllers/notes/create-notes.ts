@@ -15,6 +15,7 @@ export async function createNotes(
       equipment_tag: z.string(),
       author: z.string(),
       opportunity: z.number(),
+      equipmentId: z.string().nullable().default(null),
     }),
   )
 

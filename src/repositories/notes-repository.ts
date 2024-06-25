@@ -5,6 +5,7 @@ export type Note = {
   equipment_tag: string
   author: string
   opportunity: number
+  equipmentId: string | null
 }
 
 export interface NotesRepository {

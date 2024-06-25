@@ -17,6 +17,7 @@ model Equipment {
   description String?
   photos      Photo[]
   markings    marking[]
+  notes       Note[]
 
   @@map("equipaments")
 }
@@ -76,6 +77,9 @@ model Note {
   equipment_tag String
   author        String
   opportunity   Int
+
+  Equipment   Equipment? @relation(fields: [equipmentId], references: [id])
+  equipmentId String?
 
   @@map("notes")
 }
