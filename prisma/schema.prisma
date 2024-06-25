@@ -68,3 +68,14 @@ model Link {
   @@id([panorama_id, panorama_connect_id])
   @@map("links")
 }
+
+model Note {
+  id            String   @id
+  createdAt     DateTime
+  description   String
+  equipment_tag String
+  author        String
+  opportunity   Int
+
+  @@map("notes")
+}

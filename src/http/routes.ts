@@ -18,6 +18,10 @@ import { uploadAllImages } from './controllers/images/upload-all-images'
 import { deleteAllImages } from './controllers/images/delete-all-images'
 import { createConnection } from './controllers/panoramas/create-connection'
 import { deleteConnection } from './controllers/panoramas/delete-connection'
+import { createNote } from './controllers/notes/create-note'
+import { createNotes } from './controllers/notes/create-notes'
+import { getNotes } from './controllers/notes/get-notes'
+import { getNote } from './controllers/notes/get-note'
 
 export async function appRoutes(app: FastifyInstance) {
   app.post('/equipment', createEquipment)
@@ -38,4 +42,9 @@ export async function appRoutes(app: FastifyInstance) {
   app.delete('/image/:key', deleteImage)
   app.post('/all-images', uploadAllImages)
   app.delete('/all-images', deleteAllImages)
+
+  app.post('/note', createNote)
+  app.post('/notes', createNotes)
+  app.get('/notes', getNotes)
+  app.get('/note/:id', getNote)
 }
