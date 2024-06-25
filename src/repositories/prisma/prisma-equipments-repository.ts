@@ -21,6 +21,7 @@ export class PrismaEquipmentsRepository implements EquipmentsRepository {
             panorama: true,
           },
         },
+        notes: true,
       },
     })
 
@@ -46,6 +47,7 @@ export class PrismaEquipmentsRepository implements EquipmentsRepository {
             panorama: true,
           },
         },
+        notes: true,
       },
     })
 
@@ -66,6 +68,7 @@ export class PrismaEquipmentsRepository implements EquipmentsRepository {
             link: true,
           },
         },
+        notes: true,
       },
     })
 
@@ -113,6 +116,7 @@ export class PrismaEquipmentsRepository implements EquipmentsRepository {
             panorama: true,
           },
         },
+        notes: true,
       },
     })
 
@@ -151,6 +155,7 @@ export class PrismaEquipmentsRepository implements EquipmentsRepository {
             panorama: true,
           },
         },
+        notes: true,
       },
     })
 
