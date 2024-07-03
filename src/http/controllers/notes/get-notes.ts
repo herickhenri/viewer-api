@@ -1,5 +1,5 @@
 import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found-error'
-import { makeGetNotesUseCases } from '@/use-cases/factories/get-notes'
+import { makeGetNotesUseCases } from '@/use-cases/factories/make-get-notes-use-cases'
 import { FastifyRequest, FastifyReply } from 'fastify'
 
 export async function getNotes(request: FastifyRequest, reply: FastifyReply) {

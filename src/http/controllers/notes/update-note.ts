@@ -1,9 +1,9 @@
-import { NoteAlreadyExistsError } from '@/use-cases/errors/note-already-exists-error'
-import { makeCreateNoteUseCases } from '@/use-cases/factories/make-create-note-use-cases'
+import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found-error'
+import { makeUpdateNoteUseCases } from '@/use-cases/factories/make-update-note-use-cases'
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { z } from 'zod'
 
-export async function createNote(request: FastifyRequest, reply: FastifyReply) {
+export async function updateNote(request: FastifyRequest, reply: FastifyReply) {
   const noteBodySchema = z.object({
     id: z.string(),
     createdAt: z.coerce.date(),
@@ -20,14 +20,14 @@ export async function createNote(request: FastifyRequest, reply: FastifyReply) {
   const data = noteBodySchema.parse(request.body)
 
   try {
-    const createNoteUseCases = makeCreateNoteUseCases()
+    const createNoteUseCases = makeUpdateNoteUseCases()
 
     await createNoteUseCases.execute(data)
 
-    return reply.status(201).send()
+    return reply.status(204).send()
   } catch (err) {
-    if (err instanceof NoteAlreadyExistsError) {
-      return reply.status(409).send({ message: err.message })
+    if (err instanceof ResourceNotFoundError) {
+      return reply.status(404).send({ message: err.message })
     }
 
     throw err

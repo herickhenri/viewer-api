@@ -40,6 +40,7 @@ model Panorama {
   gps_y      Decimal?
   markings   marking[]
   links      Link[]
+  notes      Note[]
 
   @@map("panoramas")
 }
@@ -77,9 +78,13 @@ model Note {
   equipment_tag String
   author        String
   opportunity   Int
+  coord_x       Int?
+  coord_y       Int?
 
   Equipment   Equipment? @relation(fields: [equipmentId], references: [id])
   equipmentId String?
+  Panorama    Panorama?  @relation(fields: [panoramaId], references: [id])
+  panoramaId  String?
 
   @@map("notes")
 }

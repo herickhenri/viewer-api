@@ -1,5 +1,5 @@
 import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found-error'
-import { makeGetNoteUseCases } from '@/use-cases/factories/get-note'
+import { makeGetNoteUseCases } from '@/use-cases/factories/make-get-note-use-cases'
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { z } from 'zod'
 

@@ -6,6 +6,16 @@ export type Note = {
   author: string
   opportunity: number
   equipmentId: string | null
+  panoramaId: string | null
+  coord_x: number | null
+  coord_y: number | null
+}
+
+export type Coordinates = {
+  panoramaId: string
+  noteId: string
+  coord_x: number | null
+  coord_y: number | null
 }
 
 export interface NotesRepository {
@@ -14,4 +24,5 @@ export interface NotesRepository {
   findById(id: string): Promise<Note | null>
   findMany(): Promise<Note[] | null>
   createMany(notes: Note[]): Promise<void>
+  update(updatedNote: Note): Promise<void>
 }

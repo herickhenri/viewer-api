@@ -33,4 +33,11 @@ export class PrismaNotesRepository implements NotesRepository {
       data: notes,
     })
   }
+
+  async update(updatedNote: Note) {
+    await prisma.note.update({
+      where: { id: updatedNote.id },
+      data: updatedNote,
+    })
+  }
 }

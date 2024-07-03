@@ -20,6 +20,10 @@ describe('Get Notes Use Case', () => {
       equipment_tag: 'I-1502-BB-200',
       id,
       opportunity: 0,
+      coord_x: null,
+      coord_y: null,
+      equipmentId: null,
+      panoramaId: null,
     }
 
     await notesRepository.create(noteData)
