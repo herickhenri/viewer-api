@@ -32,17 +32,32 @@ model Photo {
 }
 
 model Panorama {
-  id         String    @id @default(cuid())
-  name       String
-  image_key  String
-  image_link String
-  gps_x      Decimal?
-  gps_y      Decimal?
-  markings   marking[]
-  links      Link[]
-  notes      Note[]
+  id               String             @id @default(cuid())
+  name             String
+  image_key        String
+  image_link       String
+  gps_x            Decimal?
+  gps_y            Decimal?
+  markings         marking[]
+  links            Link[]
+  NotesOnPanoramas NotesOnPanoramas[]
 
   @@map("panoramas")
+}
+
+model Note {
+  id            String   @id
+  createdAt     DateTime
+  description   String
+  equipment_tag String
+  author        String
+  opportunity   Int
+
+  Equipment        Equipment?         @relation(fields: [equipmentId], references: [id])
+  equipmentId      String?
+  NotesOnPanoramas NotesOnPanoramas[]
+
+  @@map("notes")
 }
 
 model marking {
@@ -71,20 +86,15 @@ model Link {
   @@map("links")
 }
 
-model Note {
-  id            String   @id
-  createdAt     DateTime
-  description   String
-  equipment_tag String
-  author        String
-  opportunity   Int
-  coord_x       Int?
-  coord_y       Int?
+model NotesOnPanoramas {
+  coord_x Int
+  coord_y Int
 
-  Equipment   Equipment? @relation(fields: [equipmentId], references: [id])
-  equipmentId String?
-  Panorama    Panorama?  @relation(fields: [panoramaId], references: [id])
-  panoramaId  String?
+  note    Note   @relation(fields: [note_id], references: [id])
+  note_id String
 
-  @@map("notes")
+  Panorama    Panorama @relation(fields: [panorama_id], references: [id])
+  panorama_id String
+
+  @@id([note_id, panorama_id])
 }

@@ -12,9 +12,15 @@ export async function updateNote(request: FastifyRequest, reply: FastifyReply) {
     author: z.string(),
     opportunity: z.number(),
     equipmentId: z.string().nullable().default(null),
-    panoramaId: z.string().nullable().default(null),
-    coord_x: z.number().nullable().default(null),
-    coord_y: z.number().nullable().default(null),
+    NotesOnPanoramas: z
+      .array(
+        z.object({
+          coord_x: z.number(),
+          coord_y: z.number(),
+          panorama_id: z.string(),
+        }),
+      )
+      .optional(),
   })
 
   const data = noteBodySchema.parse(request.body)

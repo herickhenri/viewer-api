@@ -1,8 +1,8 @@
 import { prisma } from '@/lib/prisma'
-import { Note, NotesRepository } from '../notes-repository'
+import { Note, NoteInput, NotesRepository } from '../notes-repository'
 
 export class PrismaNotesRepository implements NotesRepository {
-  async create(note: Note) {
+  async create(note: NoteInput) {
     await prisma.note.create({
       data: note,
     })
@@ -17,13 +17,28 @@ export class PrismaNotesRepository implements NotesRepository {
   async findById(id: string) {
     const note = await prisma.note.findUnique({
       where: { id },
+      include: {
+        NotesOnPanoramas: {
+          select: {
+            panorama_id: true,
+          },
+        },
+      },
     })
 
     return note
   }
 
   async findMany() {
-    const notes = await prisma.note.findMany()
+    const notes = await prisma.note.findMany({
+      include: {
+        NotesOnPanoramas: {
+          select: {
+            panorama_id: true,
+          },
+        },
+      },
+    })
 
     return notes
   }
@@ -34,7 +49,7 @@ export class PrismaNotesRepository implements NotesRepository {
     })
   }
 
-  async update(updatedNote: Note) {
+  async update(updatedNote: NoteInput) {
     await prisma.note.update({
       where: { id: updatedNote.id },
       data: updatedNote,

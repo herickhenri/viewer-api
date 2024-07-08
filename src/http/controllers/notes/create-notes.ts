@@ -16,9 +16,6 @@ export async function createNotes(
       author: z.string(),
       opportunity: z.number(),
       equipmentId: z.string().nullable().default(null),
-      panoramaId: z.string().nullable().default(null),
-      coord_x: z.number().nullable().default(null),
-      coord_y: z.number().nullable().default(null),
     }),
   )
 

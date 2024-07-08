@@ -19,6 +19,13 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
             equipment_id: true,
           },
         },
+        NotesOnPanoramas: {
+          select: {
+            coord_x: true,
+            coord_y: true,
+            note_id: true,
+          },
+        },
         links: true,
       },
     })
@@ -38,6 +45,13 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
             coord_x: true,
             coord_y: true,
             equipment_id: true,
+          },
+        },
+        NotesOnPanoramas: {
+          select: {
+            coord_x: true,
+            coord_y: true,
+            note_id: true,
           },
         },
         links: true,
@@ -76,6 +90,13 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
             coord_x: true,
             coord_y: true,
             equipment_id: true,
+          },
+        },
+        NotesOnPanoramas: {
+          select: {
+            coord_x: true,
+            coord_y: true,
+            note_id: true,
           },
         },
         links: true,
@@ -129,6 +150,13 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
             coord_x: true,
             coord_y: true,
             equipment_id: true,
+          },
+        },
+        NotesOnPanoramas: {
+          select: {
+            coord_x: true,
+            coord_y: true,
+            note_id: true,
           },
         },
         links: true,
