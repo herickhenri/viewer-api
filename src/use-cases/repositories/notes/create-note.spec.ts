@@ -21,10 +21,7 @@ describe('Create Note Use Case', () => {
       equipment_tag: 'I-1502-BB-200',
       id,
       opportunity: 0,
-      coord_x: null,
-      coord_y: null,
       equipmentId: null,
-      panoramaId: null,
     })
 
     const noteFind = await notesRepository.findById(id)
@@ -42,10 +39,7 @@ describe('Create Note Use Case', () => {
       equipment_tag: 'I-1502-BB-200',
       id,
       opportunity: 0,
-      coord_x: null,
-      coord_y: null,
       equipmentId: null,
-      panoramaId: null,
     })
 
     await expect(() =>
@@ -56,10 +50,7 @@ describe('Create Note Use Case', () => {
         equipment_tag: 'I-1502-BB-200',
         id,
         opportunity: 0,
-        coord_x: null,
-        coord_y: null,
         equipmentId: null,
-        panoramaId: null,
       }),
     ).rejects.toBeInstanceOf(NoteAlreadyExistsError)
   })

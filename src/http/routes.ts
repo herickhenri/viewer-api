@@ -23,6 +23,8 @@ import { createNotes } from './controllers/notes/create-notes'
 import { getNotes } from './controllers/notes/get-notes'
 import { getNote } from './controllers/notes/get-note'
 import { updateNote } from './controllers/notes/update-note'
+import { createNoteMarkup } from './controllers/notes/create-note-markup'
+import { deleteNoteMarkup } from './controllers/notes/delete-note-markup'
 
 export async function appRoutes(app: FastifyInstance) {
   app.post('/equipment', createEquipment)
@@ -49,4 +51,6 @@ export async function appRoutes(app: FastifyInstance) {
   app.get('/notes', getNotes)
   app.get('/note/:id', getNote)
   app.put('/note/:id', updateNote)
+  app.post('/note/markup', createNoteMarkup)
+  app.delete('/note/markup', deleteNoteMarkup)
 }

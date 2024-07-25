@@ -22,10 +22,7 @@ describe('Update Note Use Case', () => {
       equipment_tag: 'I-1502-BB-200',
       id,
       opportunity: 0,
-      coord_x: null,
-      coord_y: null,
       equipmentId: null,
-      panoramaId: null,
     })
 
     const updatedData = {
@@ -35,10 +32,7 @@ describe('Update Note Use Case', () => {
       equipment_tag: 'I-1502-BB-300',
       id,
       opportunity: 0,
-      coord_x: 100,
-      coord_y: 100,
       equipmentId: 'newEquipmentId',
-      panoramaId: 'newPanoramaId',
     }
 
     await sut.execute(updatedData)
@@ -59,10 +53,7 @@ describe('Update Note Use Case', () => {
         equipment_tag: 'I-1502-BB-200',
         id,
         opportunity: 0,
-        coord_x: null,
-        coord_y: null,
         equipmentId: null,
-        panoramaId: null,
       }),
     ).rejects.toBeInstanceOf(ResourceNotFoundError)
   })

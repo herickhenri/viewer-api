@@ -1,5 +1,11 @@
 import { prisma } from '@/lib/prisma'
-import { Note, NoteInput, NotesRepository } from '../notes-repository'
+import {
+  Coordinates,
+  DeleteMarkupRequest,
+  Note,
+  NoteInput,
+  NotesRepository,
+} from '../notes-repository'
 
 export class PrismaNotesRepository implements NotesRepository {
   async create(note: NoteInput) {
@@ -21,6 +27,8 @@ export class PrismaNotesRepository implements NotesRepository {
         NotesOnPanoramas: {
           select: {
             panorama_id: true,
+            coord_x: true,
+            coord_y: true,
           },
         },
       },
@@ -35,6 +43,8 @@ export class PrismaNotesRepository implements NotesRepository {
         NotesOnPanoramas: {
           select: {
             panorama_id: true,
+            coord_x: true,
+            coord_y: true,
           },
         },
       },
@@ -53,6 +63,20 @@ export class PrismaNotesRepository implements NotesRepository {
     await prisma.note.update({
       where: { id: updatedNote.id },
       data: updatedNote,
+    })
+  }
+
+  async createMarkup(coordinates: Coordinates) {
+    await prisma.notesOnPanoramas.create({
+      data: coordinates,
+    })
+  }
+
+  async deleteMarkup({ note_id, panorama_id }: DeleteMarkupRequest) {
+    await prisma.notesOnPanoramas.delete({
+      where: {
+        note_id_panorama_id: { note_id, panorama_id },
+      },
     })
   }
 }
