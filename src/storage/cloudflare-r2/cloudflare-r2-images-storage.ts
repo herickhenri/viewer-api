@@ -1,4 +1,4 @@
-import { File, ImagesStorage } from '../images-storage'
+import { File, Image, ImagesStorage } from '../images-storage'
 import { randomUUID } from 'node:crypto'
 import { s3Client } from '@/lib/s3Client'
 import { env } from '@/env'
@@ -6,7 +6,7 @@ import { DeleteObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3'
 // TODO: tratativa de erros
 
 export class CloudflareR2ImagesStorage implements ImagesStorage {
-  async upload({ buffer, contentType }: File) {
+  async upload({ buffer, contentType }: File): Promise<Image> {
     const fileName = `${randomUUID()}`
 
     const command = new PutObjectCommand({
@@ -20,7 +20,7 @@ export class CloudflareR2ImagesStorage implements ImagesStorage {
 
     const link = `${env.CLOUDFLARE_PUBLIC_URL}/${fileName}`
 
-    const image = { key: fileName, link, name: 'name' }
+    const image = { key: fileName, link }
 
     return image
   }
@@ -50,7 +50,7 @@ export class CloudflareR2ImagesStorage implements ImagesStorage {
 
         const link = `${env.CLOUDFLARE_PUBLIC_URL}/${fileName}`
 
-        const image = { key: fileName, link, name: 'name' }
+        const image = { key: fileName, link }
         return image
       }),
     )
@@ -59,6 +59,8 @@ export class CloudflareR2ImagesStorage implements ImagesStorage {
 
   async deleteMany(keys: string[]) {
     keys.forEach(async (key) => {
+      console.log({ key })
+
       const deleteObjectCommand = new DeleteObjectCommand({
         Bucket: env.CLOUDFLARE_BUCKET_NAME,
         Key: key,

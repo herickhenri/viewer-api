@@ -12,21 +12,34 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
     const panorama = await prisma.panorama.findUnique({
       where: { id },
       include: {
-        markings: {
+        images: {
+          select: {
+            key: true,
+            link: true,
+            quality: true,
+          },
+        },
+        equipments: {
           select: {
             coord_x: true,
             coord_y: true,
             equipment_id: true,
           },
         },
-        NotesOnPanoramas: {
+        notes: {
           select: {
             coord_x: true,
             coord_y: true,
             note_id: true,
           },
         },
-        links: true,
+        links: {
+          select: {
+            coord_x: true,
+            coord_y: true,
+            panorama_connect_id: true,
+          },
+        },
       },
     })
 
@@ -40,66 +53,83 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
   async findMany() {
     const panoramas = await prisma.panorama.findMany({
       include: {
-        markings: {
+        images: {
+          select: {
+            key: true,
+            link: true,
+            quality: true,
+          },
+        },
+        equipments: {
           select: {
             coord_x: true,
             coord_y: true,
             equipment_id: true,
           },
         },
-        NotesOnPanoramas: {
+        notes: {
           select: {
             coord_x: true,
             coord_y: true,
             note_id: true,
           },
         },
-        links: true,
+        links: {
+          select: {
+            coord_x: true,
+            coord_y: true,
+            panorama_connect_id: true,
+          },
+        },
       },
     })
 
     return panoramas
   }
 
-  async create({
-    name,
-    image_key,
-    image_link,
-    gps_x,
-    gps_y,
-    markings,
-    links,
-  }: PanoramaInput) {
+  async create({ name, images, links, equipments }: PanoramaInput) {
     const panorama = await prisma.panorama.create({
       data: {
         name,
-        image_key,
-        image_link,
-        gps_x,
-        gps_y,
-        markings: {
-          create: markings,
+        images: {
+          create: images,
+        },
+        equipments: {
+          create: equipments,
         },
         links: {
           create: links,
         },
       },
       include: {
-        markings: {
+        images: {
+          select: {
+            key: true,
+            link: true,
+            quality: true,
+          },
+        },
+        equipments: {
           select: {
             coord_x: true,
             coord_y: true,
             equipment_id: true,
           },
         },
-        NotesOnPanoramas: {
+        notes: {
           select: {
             coord_x: true,
             coord_y: true,
             note_id: true,
           },
         },
-        links: true,
+        links: {
+          select: {
+            coord_x: true,
+            coord_y: true,
+            panorama_connect_id: true,
+          },
+        },
       },
     })
 
@@ -107,15 +137,7 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
   }
 
   async update(
-    {
-      name,
-      image_key,
-      image_link,
-      gps_x,
-      gps_y,
-      markings,
-      links,
-    }: UpdatePanorama,
+    { name, images, links, equipments }: UpdatePanorama,
     id: string,
   ) {
     if (links) {
@@ -123,8 +145,13 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
         where: { panorama_id: id },
       })
     }
-    if (markings) {
-      await prisma.marking.deleteMany({
+    if (equipments) {
+      await prisma.equipmentsOnPanorama.deleteMany({
+        where: { panorama_id: id },
+      })
+    }
+    if (images) {
+      await prisma.panoramaImage.deleteMany({
         where: { panorama_id: id },
       })
     }
@@ -133,33 +160,45 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
       where: { id },
       data: {
         name,
-        image_key,
-        image_link,
-        gps_x,
-        gps_y,
-        markings: {
-          create: markings,
+        images: {
+          create: images,
+        },
+        equipments: {
+          create: equipments,
         },
         links: {
           create: links,
         },
       },
       include: {
-        markings: {
+        images: {
+          select: {
+            key: true,
+            link: true,
+            quality: true,
+          },
+        },
+        equipments: {
           select: {
             coord_x: true,
             coord_y: true,
             equipment_id: true,
           },
         },
-        NotesOnPanoramas: {
+        notes: {
           select: {
             coord_x: true,
             coord_y: true,
             note_id: true,
           },
         },
-        links: true,
+        links: {
+          select: {
+            coord_x: true,
+            coord_y: true,
+            panorama_connect_id: true,
+          },
+        },
       },
     })
 
@@ -167,13 +206,6 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
   }
 
   async delete(id: string) {
-    await prisma.marking.deleteMany({
-      where: { panorama_id: id },
-    })
-    await prisma.link.deleteMany({
-      where: { panorama_id: id },
-    })
-
     await prisma.panorama.delete({
       where: { id },
     })
@@ -191,7 +223,7 @@ export class PrismaPanoramasRepository implements PanoramasRepository {
         },
       })
 
-      // If the connection exists, it is updated, if it does not exist, the connection is created
+      // If the connection already exists, it is updated, if it does not exist, the connection is created
       if (connectionAlreadyExists) {
         await prisma.link.update({
           where: {

@@ -10,7 +10,7 @@ export class DeleteNoteMarkupUseCases {
   async execute({ note_id, panorama_id }: DeleteMarkupRequest) {
     const note = await this.notesRepository.findById(note_id)
 
-    const markupExist = note?.NotesOnPanoramas?.find(
+    const markupExist = note?.panoramas?.find(
       (connection) => connection.panorama_id === panorama_id,
     )
 

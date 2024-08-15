@@ -6,12 +6,12 @@ import { z } from 'zod'
 export async function createNote(request: FastifyRequest, reply: FastifyReply) {
   const noteBodySchema = z.object({
     id: z.string(),
-    createdAt: z.coerce.date(),
+    created_at: z.coerce.date(),
     description: z.string(),
     equipment_tag: z.string(),
     author: z.string(),
     opportunity: z.number(),
-    equipmentId: z.string().nullable().default(null),
+    equipment_id: z.string().nullable().default(null),
   })
 
   const data = noteBodySchema.parse(request.body)

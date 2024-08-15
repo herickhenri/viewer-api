@@ -22,12 +22,12 @@ describe('Create Note Markup Use Case', () => {
 
     await notesRepository.create({
       author: 'Jhon',
-      createdAt: new Date(),
+      created_at: new Date(),
       description: 'Descrição',
       equipment_tag: 'I-1502-BB-200',
       id,
       opportunity: 0,
-      equipmentId: null,
+      equipment_id: null,
     })
 
     await sut.execute({
@@ -37,7 +37,7 @@ describe('Create Note Markup Use Case', () => {
 
     const noteFind = await notesRepository.findById(id)
 
-    expect(noteFind?.NotesOnPanoramas).toStrictEqual([connection])
+    expect(noteFind?.panoramas).toStrictEqual([connection])
   })
 
   it('shoud not be able create markup with not existing id', async () => {
@@ -56,12 +56,12 @@ describe('Create Note Markup Use Case', () => {
 
     await notesRepository.create({
       author: 'Jhon',
-      createdAt: new Date(),
+      created_at: new Date(),
       description: 'Descrição',
       equipment_tag: 'I-1502-BB-200',
       id,
       opportunity: 0,
-      equipmentId: null,
+      equipment_id: null,
     })
 
     const firstConnection = {
@@ -87,7 +87,7 @@ describe('Create Note Markup Use Case', () => {
 
     const noteFind = await notesRepository.findById(id)
 
-    expect(noteFind?.NotesOnPanoramas).toContainEqual(firstConnection)
-    expect(noteFind?.NotesOnPanoramas).toContainEqual(secondConnection)
+    expect(noteFind?.panoramas).toContainEqual(firstConnection)
+    expect(noteFind?.panoramas).toContainEqual(secondConnection)
   })
 })

@@ -1,26 +1,37 @@
 import {
   Equipment,
-  EquipmentInput,
   EquipmentsRepository,
 } from '../../../repositories/equipments-repository'
 import { EquipmentAlreadyExistsError } from '../../errors/equipment-already-exists-error'
 import { IncorrectlyFormattedTagError } from '../../errors/incorrectly-formatted-tag-error'
 import { checkTagFormat } from '../../../utils/check-tag-format'
+import { ImagesStorage } from '@/storage/images-storage'
 
-type createEquipmentRequest = EquipmentInput
+interface createEquipmentRequest {
+  name: string
+  description?: string
+  tag: string
+  files?: {
+    buffer: Buffer
+    contentType: string
+  }[]
+}
 
 interface createEquipmentResponse {
   equipment: Equipment
 }
 
 export class CreateEquipmentUseCases {
-  constructor(private equipmentsRepository: EquipmentsRepository) {}
+  constructor(
+    private equipmentsRepository: EquipmentsRepository,
+    private imagesStorage: ImagesStorage,
+  ) {}
 
   async execute({
     name,
     description,
     tag,
-    photos,
+    files,
   }: createEquipmentRequest): Promise<createEquipmentResponse> {
     const equipmentWithTheSameTag =
       await this.equipmentsRepository.findByTag(tag)
@@ -34,6 +45,8 @@ export class CreateEquipmentUseCases {
     if (!tagIsCorrectFormat) {
       throw new IncorrectlyFormattedTagError()
     }
+
+    const photos = files && (await this.imagesStorage.uploadMany(files))
 
     const equipment = await this.equipmentsRepository.create({
       name,

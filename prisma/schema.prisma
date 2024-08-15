@@ -11,67 +11,60 @@ datasource db {
 }
 
 model Equipment {
-  id          String    @id @default(cuid())
-  tag         String    @unique
+  id          String                 @id @default(cuid())
+  tag         String                 @unique
   name        String
   description String?
-  photos      Photo[]
-  markings    marking[]
+  photos      EquipmentPhoto[]
+  panoramas   EquipmentsOnPanorama[]
   notes       Note[]
 
   @@map("equipaments")
 }
 
-model Photo {
-  key         String     @id
-  link        String     @unique
-  Equipment   Equipment? @relation(fields: [equipmentId], references: [id])
-  equipmentId String?
+model EquipmentPhoto {
+  key          String    @id
+  link         String    @unique
+  equipment    Equipment @relation(fields: [equipment_id], references: [id], onDelete: Cascade)
+  equipment_id String
 
-  @@map("photos")
+  @@map("equipment_photos")
 }
 
 model Panorama {
-  id               String             @id @default(cuid())
-  name             String
-  image_key        String
-  image_link       String
-  gps_x            Decimal?
-  gps_y            Decimal?
-  markings         marking[]
-  links            Link[]
-  NotesOnPanoramas NotesOnPanoramas[]
+  id         String                 @id @default(cuid())
+  name       String
+  images     PanoramaImage[]
+  equipments EquipmentsOnPanorama[]
+  links      Link[]
+  notes      NotesOnPanoramas[]
 
   @@map("panoramas")
 }
 
+model PanoramaImage {
+  key         String   @id
+  link        String   @unique
+  quality     Int
+  panorama    Panorama @relation(fields: [panorama_id], references: [id], onDelete: Cascade)
+  panorama_id String
+
+  @@map("panorama_images")
+}
+
 model Note {
   id            String   @id
-  createdAt     DateTime
+  created_at    DateTime
   description   String
   equipment_tag String
   author        String
   opportunity   Int
 
-  Equipment        Equipment?         @relation(fields: [equipmentId], references: [id])
-  equipmentId      String?
-  NotesOnPanoramas NotesOnPanoramas[]
+  equipment    Equipment?         @relation(fields: [equipment_id], references: [id])
+  equipment_id String?
+  panoramas    NotesOnPanoramas[]
 
   @@map("notes")
-}
-
-model marking {
-  coord_x Int
-  coord_y Int
-
-  equipment    Equipment @relation(fields: [equipment_id], references: [id])
-  equipment_id String
-
-  panorama    Panorama @relation(fields: [panorama_id], references: [id])
-  panorama_id String
-
-  @@id([panorama_id, equipment_id])
-  @@map("markings")
 }
 
 model Link {
@@ -79,21 +72,34 @@ model Link {
   coord_y             Int
   panorama_connect_id String
 
-  Panorama    Panorama @relation(fields: [panorama_id], references: [id])
+  panorama    Panorama @relation(fields: [panorama_id], references: [id], onDelete: Cascade)
   panorama_id String
 
   @@id([panorama_id, panorama_connect_id])
   @@map("links")
 }
 
+model EquipmentsOnPanorama {
+  coord_x Int
+  coord_y Int
+
+  equipment    Equipment @relation(fields: [equipment_id], references: [id], onDelete: Cascade)
+  equipment_id String
+
+  panorama    Panorama @relation(fields: [panorama_id], references: [id], onDelete: Cascade)
+  panorama_id String
+
+  @@id([panorama_id, equipment_id])
+}
+
 model NotesOnPanoramas {
   coord_x Int
   coord_y Int
 
-  note    Note   @relation(fields: [note_id], references: [id])
+  note    Note   @relation(fields: [note_id], references: [id], onDelete: Cascade)
   note_id String
 
-  Panorama    Panorama @relation(fields: [panorama_id], references: [id])
+  panorama    Panorama @relation(fields: [panorama_id], references: [id], onDelete: Cascade)
   panorama_id String
 
   @@id([note_id, panorama_id])

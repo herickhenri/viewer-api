@@ -4,6 +4,12 @@ import { EquipmentAlreadyExistsError } from '../../../use-cases/errors/equipment
 import { IncorrectlyFormattedTagError } from '../../../use-cases/errors/incorrectly-formatted-tag-error'
 import { makeCreateEquipmentUseCases } from '../../../use-cases/factories/make-create-equipment-use-cases'
 
+type FileFormat = {
+  buffer: Buffer
+  name: string
+  contentType: string
+}
+
 export async function createEquipment(
   request: FastifyRequest,
   reply: FastifyReply,
@@ -12,16 +18,36 @@ export async function createEquipment(
     tag: z.string().toUpperCase(),
     name: z.string().min(1),
     description: z.string().optional(),
-    photos: z
+    files: z
       .array(
         z.object({
-          key: z.string(),
-          link: z.string(),
+          buffer: z.instanceof(Buffer),
+          name: z.string(),
+          contentType: z.string(),
         }),
       )
       .optional(),
   })
-  const data = equipmentBodySchema.parse(request.body)
+
+  const parts = request.parts()
+  const json: Record<string, string> = {}
+  const files: FileFormat[] = []
+
+  for await (const part of parts) {
+    if (part.type === 'file') {
+      const image = {
+        buffer: await part.toBuffer(),
+        name: part.fieldname,
+        contentType: part.mimetype,
+      }
+      files.push(image)
+    } else {
+      // part.type === 'field'
+      json[part.fieldname] = String(part.value)
+    }
+  }
+
+  const data = equipmentBodySchema.parse({ ...json, files })
 
   try {
     const createEquipmentUseCases = makeCreateEquipmentUseCases()

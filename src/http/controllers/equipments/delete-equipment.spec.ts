@@ -1,6 +1,7 @@
 import request from 'supertest'
 import { app } from '../../../app'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import path from 'node:path'
 
 describe('Delete Equipment (e2e)', () => {
   beforeAll(async () => {
@@ -12,19 +13,23 @@ describe('Delete Equipment (e2e)', () => {
   })
 
   it('shoud be able to delete equipment', async () => {
+    const filePath = path.resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      'utils',
+      'test',
+      'test.png',
+    )
+
     const createResponse = await request(app.server)
       .post('/equipment')
-      .send({
-        name: 'Bomba de lama',
-        description: 'Bomba de lama para o LMCD 1',
-        tag: 'I-1501-BB-101',
-        photos: [
-          {
-            key: 'example-key',
-            link: 'example-link',
-          },
-        ],
-      })
+      .field('name', 'Example-equipment')
+      .field('description', 'Example-description')
+      .field('tag', 'A-1111-BB-222')
+      .attach('image-example', filePath)
+
     const { id }: { id: string } = createResponse.body.equipment
 
     const response = await request(app.server).delete(`/equipment/${id}`)

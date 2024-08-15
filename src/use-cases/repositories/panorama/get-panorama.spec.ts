@@ -3,18 +3,21 @@ import { ResourceNotFoundError } from '../../errors/resource-not-found-error'
 import { GetPanoramaUseCases } from './get-panorama'
 import { InMemoryPanoramasRepository } from '../../../repositories/in-memory/in-memory-panoramas-repository'
 import { createPanorama } from '@/utils/test/create-panorama'
+import { LocalImagesStorage } from '@/storage/local/local-images-storage'
 
 let panoramasRepository: InMemoryPanoramasRepository
+let imagesStorage: LocalImagesStorage
 let sut: GetPanoramaUseCases
 
 describe('Get Panorama Use Case', () => {
   beforeEach(() => {
     panoramasRepository = new InMemoryPanoramasRepository()
+    imagesStorage = new LocalImagesStorage()
     sut = new GetPanoramaUseCases(panoramasRepository)
   })
 
   it('shoud be able to get panorama by id', async () => {
-    const { id } = await createPanorama(panoramasRepository)
+    const { id } = await createPanorama(panoramasRepository, imagesStorage)
 
     const { panorama } = await sut.execute({ id })
 

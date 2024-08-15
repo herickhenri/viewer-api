@@ -1,6 +1,7 @@
 import { app } from '@/app'
 import request from 'supertest'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import path from 'node:path'
 
 describe('Create Equipment (e2e)', () => {
   beforeAll(async () => {
@@ -12,19 +13,22 @@ describe('Create Equipment (e2e)', () => {
   })
 
   it('shoud be able to create equipment', async () => {
+    const filePath = path.resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      'utils',
+      'test',
+      'test.png',
+    )
+
     const response = await request(app.server)
       .post('/equipment')
-      .send({
-        name: 'Bomba de lama',
-        description: 'Bomba de lama para o LMCD 1',
-        tag: 'I-1501-BB-101',
-        photos: [
-          {
-            key: 'example-key',
-            link: 'example-link',
-          },
-        ],
-      })
+      .field('name', 'Example-equipment')
+      .field('description', 'Example-description')
+      .field('tag', 'A-1111-BB-222')
+      .attach('image-example', filePath)
 
     expect(response.statusCode).toEqual(201)
   })

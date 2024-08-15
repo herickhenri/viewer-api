@@ -1,5 +1,4 @@
 import { Note } from './notes-repository'
-import { Panorama } from './panoramas-repository'
 
 export type Equipment = {
   id: string
@@ -10,7 +9,9 @@ export type Equipment = {
     key: string
     link: string
   }[]
-  panoramas?: Panorama[]
+  panoramas?: {
+    panorama_id: string
+  }[]
   notes?: Note[]
 }
 

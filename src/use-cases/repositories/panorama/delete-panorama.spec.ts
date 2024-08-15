@@ -3,18 +3,21 @@ import { InMemoryPanoramasRepository } from '../../../repositories/in-memory/in-
 import { DeletePanoramaUseCases } from './delete-panorama'
 import { ResourceNotFoundError } from '../../errors/resource-not-found-error'
 import { createPanorama } from '@/utils/test/create-panorama'
+import { LocalImagesStorage } from '@/storage/local/local-images-storage'
 
 let panoramasRepository: InMemoryPanoramasRepository
+let imagesStorage: LocalImagesStorage
 let sut: DeletePanoramaUseCases
 
 describe('Delete Panorama Use Case', () => {
   beforeEach(() => {
     panoramasRepository = new InMemoryPanoramasRepository()
-    sut = new DeletePanoramaUseCases(panoramasRepository)
+    imagesStorage = new LocalImagesStorage()
+    sut = new DeletePanoramaUseCases(panoramasRepository, imagesStorage)
   })
 
   it('shoud be able to delete panorama', async () => {
-    const { id } = await createPanorama(panoramasRepository)
+    const { id } = await createPanorama(panoramasRepository, imagesStorage)
 
     await sut.execute({ id })
 

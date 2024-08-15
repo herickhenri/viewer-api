@@ -1,12 +1,12 @@
 export type Note = {
-  createdAt: Date
   id: string
+  created_at: Date
   description: string
   equipment_tag: string
   author: string
   opportunity: number
-  equipmentId: string | null
-  NotesOnPanoramas?: {
+  equipment_id: string | null
+  panoramas?: {
     panorama_id: string
     coord_x: number
     coord_y: number
@@ -14,16 +14,16 @@ export type Note = {
 }
 
 export type NoteInput = {
-  createdAt: Date
+  created_at: Date
   id: string
   description: string
   equipment_tag: string
   author: string
   opportunity: number
-  equipmentId: string | null
+  equipment_id: string | null
 }
 
-export type Coordinates = {
+export type NotesOnPanoramasInput = {
   panorama_id: string
   note_id: string
   coord_x: number
@@ -42,6 +42,6 @@ export interface NotesRepository {
   findMany(): Promise<Note[] | null>
   createMany(notes: Note[]): Promise<void>
   update(updatedNote: NoteInput): Promise<void>
-  createMarkup(coordinates: Coordinates): Promise<void>
+  createMarkup(input: NotesOnPanoramasInput): Promise<void>
   deleteMarkup({ note_id, panorama_id }: DeleteMarkupRequest): Promise<void>
 }

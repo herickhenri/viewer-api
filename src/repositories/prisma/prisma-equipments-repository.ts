@@ -16,9 +16,9 @@ export class PrismaEquipmentsRepository implements EquipmentsRepository {
             link: true,
           },
         },
-        markings: {
+        panoramas: {
           select: {
-            panorama: true,
+            panorama_id: true,
           },
         },
         notes: true,
@@ -42,9 +42,9 @@ export class PrismaEquipmentsRepository implements EquipmentsRepository {
             link: true,
           },
         },
-        markings: {
+        panoramas: {
           select: {
-            panorama: true,
+            panorama_id: true,
           },
         },
         notes: true,
@@ -68,6 +68,11 @@ export class PrismaEquipmentsRepository implements EquipmentsRepository {
             link: true,
           },
         },
+        panoramas: {
+          select: {
+            panorama_id: true,
+          },
+        },
         notes: true,
       },
     })
@@ -86,6 +91,11 @@ export class PrismaEquipmentsRepository implements EquipmentsRepository {
           select: {
             key: true,
             link: true,
+          },
+        },
+        panoramas: {
+          select: {
+            panorama_id: true,
           },
         },
         notes: true,
@@ -111,9 +121,9 @@ export class PrismaEquipmentsRepository implements EquipmentsRepository {
             link: true,
           },
         },
-        markings: {
+        panoramas: {
           select: {
-            panorama: true,
+            panorama_id: true,
           },
         },
         notes: true,
@@ -128,9 +138,7 @@ export class PrismaEquipmentsRepository implements EquipmentsRepository {
     id: string,
   ) {
     if (photos) {
-      await prisma.photo.deleteMany({
-        where: { equipmentId: id },
-      })
+      await prisma.equipmentPhoto.deleteMany({ where: { equipment_id: id } })
     }
 
     const equipment = await prisma.equipment.update({
@@ -150,9 +158,9 @@ export class PrismaEquipmentsRepository implements EquipmentsRepository {
             link: true,
           },
         },
-        markings: {
+        panoramas: {
           select: {
-            panorama: true,
+            panorama_id: true,
           },
         },
         notes: true,
@@ -163,7 +171,7 @@ export class PrismaEquipmentsRepository implements EquipmentsRepository {
   }
 
   async delete(id: string) {
-    await prisma.marking.deleteMany({
+    await prisma.equipmentsOnPanorama.deleteMany({
       where: { equipment_id: id },
     })
     await prisma.equipment.delete({

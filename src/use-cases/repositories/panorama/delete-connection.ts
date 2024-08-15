@@ -11,10 +11,12 @@ export class DeleteConnectionUseCases {
 
   async execute(ids: deleteConnectionRequest) {
     const { panorama_connect_id, panorama_id } = ids
+
     const firstPanoramaExist =
       await this.panoramasRepository.findById(panorama_id)
     const secondPanoramaExist =
       await this.panoramasRepository.findById(panorama_connect_id)
+
     if (!firstPanoramaExist || !secondPanoramaExist) {
       throw new ResourceNotFoundError()
     }

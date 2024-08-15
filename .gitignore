@@ -2,5 +2,6 @@ node_modules
 build
 coverage
 src/tmp/uploads/*
+src/tmp/tests
 # Keep environment variables out of version control
 .env

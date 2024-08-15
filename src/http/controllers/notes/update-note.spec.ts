@@ -16,7 +16,7 @@ describe('Update Note (e2e)', () => {
 
     await request(app.server).post('/note').send({
       author: 'Jhon',
-      createdAt: new Date(),
+      created_at: new Date(),
       description: 'Descrição',
       equipment_tag: 'I-1502-BB-200',
       id,
@@ -25,7 +25,7 @@ describe('Update Note (e2e)', () => {
 
     const response = await request(app.server).put(`/note/${id}`).send({
       author: 'New name',
-      createdAt: new Date(),
+      created_at: new Date(),
       description: 'new description',
       equipment_tag: 'I-1502-BB-300',
       id,

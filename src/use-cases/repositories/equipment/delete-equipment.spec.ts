@@ -3,18 +3,25 @@ import { InMemoryEquipmentsRepository } from '../../../repositories/in-memory/in
 import { DeleteEquipmentUseCases } from './delete-equipment'
 import { ResourceNotFoundError } from '../../errors/resource-not-found-error'
 import { createEquipment } from '@/utils/test/create-equipment'
+import { LocalImagesStorage } from '@/storage/local/local-images-storage'
 
 let equipmentsRepository: InMemoryEquipmentsRepository
+let imagesStorage: LocalImagesStorage
 let sut: DeleteEquipmentUseCases
 
 describe('Delete Equipment Use Case', () => {
   beforeEach(() => {
     equipmentsRepository = new InMemoryEquipmentsRepository()
-    sut = new DeleteEquipmentUseCases(equipmentsRepository)
+    imagesStorage = new LocalImagesStorage()
+    sut = new DeleteEquipmentUseCases(equipmentsRepository, imagesStorage)
   })
 
   it('shoud be able to delete equipment', async () => {
-    const { id } = await createEquipment({ equipmentsRepository })
+    const { id } = await createEquipment({
+      equipmentsRepository,
+      imagesStorage,
+      isToCreateImage: true,
+    })
 
     await sut.execute({ id })
 

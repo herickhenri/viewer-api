@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client'
 import {
   Connection,
   IdsOfPanoramaConnectionRelations,
@@ -27,23 +26,12 @@ export class InMemoryPanoramasRepository implements PanoramasRepository {
     return this.panoramas
   }
 
-  async create({
-    name,
-    image_link,
-    image_key,
-    gps_x,
-    gps_y,
-    markings,
-    links,
-  }: PanoramaInput) {
+  async create({ name, images, equipments, links }: PanoramaInput) {
     const panorama = {
       id: randomUUID(),
       name,
-      image_key,
-      image_link,
-      gps_x: gps_x ? new Prisma.Decimal(gps_x) : null,
-      gps_y: gps_y ? new Prisma.Decimal(gps_y) : null,
-      markings,
+      images,
+      equipments,
       links,
     }
 
@@ -52,10 +40,7 @@ export class InMemoryPanoramasRepository implements PanoramasRepository {
     return panorama
   }
 
-  async update(
-    { name, image_key, image_link, gps_x, gps_y, markings }: UpdatePanorama,
-    id: string,
-  ) {
+  async update({ name, images, equipments }: UpdatePanorama, id: string) {
     const index = this.panoramas.findIndex((panorama) => panorama.id === id)
     const panorama = this.panoramas.find((panorama) => panorama.id === id)
 
@@ -66,11 +51,8 @@ export class InMemoryPanoramasRepository implements PanoramasRepository {
     const updatedPanorama = {
       id: panorama.id,
       name: name || panorama.name,
-      image_link: image_link || panorama.image_link,
-      image_key: image_key || panorama.image_key,
-      gps_x: gps_x ? new Prisma.Decimal(gps_x) : panorama.gps_x,
-      gps_y: gps_y ? new Prisma.Decimal(gps_y) : panorama.gps_y,
-      markings: markings || panorama.markings,
+      images: images || panorama.images,
+      equipments: equipments || panorama.equipments,
     }
 
     this.panoramas.splice(index, 1, updatedPanorama)

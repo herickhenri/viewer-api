@@ -1,6 +1,6 @@
-import { File, Image, ImagesStorage } from '../images-storage'
+import { File, ImagesStorage } from '../images-storage'
 import path from 'node:path'
-import fs from 'fs'
+import fs from 'node:fs/promises'
 import { randomUUID } from 'node:crypto'
 
 export class LocalImagesStorage implements ImagesStorage {
@@ -25,59 +25,42 @@ export class LocalImagesStorage implements ImagesStorage {
 
   async upload({ buffer, name, contentType }: File) {
     const extension = this.getExtesion(contentType)
-    const key = `${name}-${randomUUID()}${extension}`
+    const key = `${randomUUID()}${extension}`
     const filePath = `${this.storageDirectory}\\${key}`
 
-    fs.writeFile(filePath, buffer, (err) => {
-      if (err) {
-        console.log(err)
-      }
-    })
+    await fs.writeFile(filePath, buffer)
 
-    const image = { key, name, link: filePath }
-
-    return image
+    return { key, name, link: filePath }
   }
 
   async delete(key: string) {
     const filePath = `${this.storageDirectory}\\${key}`
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        console.log(err)
-      }
-    })
+    await fs.unlink(filePath)
   }
 
   async uploadMany(files: File[]) {
-    const images: Image[] = []
-
-    files.forEach(({ buffer, name, contentType }) => {
+    const imagesPromises = files.map(async ({ buffer, contentType }) => {
       const extension = this.getExtesion(contentType)
-      const key = `${name}-${randomUUID()}${extension}`
+      const key = `${randomUUID()}${extension}`
 
       const filePath = `${this.storageDirectory}\\${key}`
 
-      fs.writeFile(filePath, buffer, (err) => {
-        if (err) {
-          console.log(err)
-        }
-      })
+      await fs.writeFile(filePath, buffer)
 
-      const image = { name, key, link: filePath }
-      images.push(image)
+      return { key, link: filePath }
     })
+
+    const images = await Promise.all(imagesPromises)
 
     return images
   }
 
-  async deleteMany(keys: string[]): Promise<void> {
-    keys.forEach((key) => {
+  async deleteMany(keys: string[]) {
+    const deletePromises = keys.map(async (key) => {
       const filePath = `${this.storageDirectory}\\${key}`
-      fs.unlink(filePath, (err) => {
-        if (err) {
-          console.log(err)
-        }
-      })
+      await fs.unlink(filePath)
     })
+
+    await Promise.all(deletePromises)
   }
 }

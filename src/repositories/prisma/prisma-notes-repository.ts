@@ -1,9 +1,9 @@
 import { prisma } from '@/lib/prisma'
 import {
-  Coordinates,
   DeleteMarkupRequest,
   Note,
   NoteInput,
+  NotesOnPanoramasInput,
   NotesRepository,
 } from '../notes-repository'
 
@@ -24,7 +24,7 @@ export class PrismaNotesRepository implements NotesRepository {
     const note = await prisma.note.findUnique({
       where: { id },
       include: {
-        NotesOnPanoramas: {
+        panoramas: {
           select: {
             panorama_id: true,
             coord_x: true,
@@ -40,7 +40,7 @@ export class PrismaNotesRepository implements NotesRepository {
   async findMany() {
     const notes = await prisma.note.findMany({
       include: {
-        NotesOnPanoramas: {
+        panoramas: {
           select: {
             panorama_id: true,
             coord_x: true,
@@ -66,9 +66,9 @@ export class PrismaNotesRepository implements NotesRepository {
     })
   }
 
-  async createMarkup(coordinates: Coordinates) {
+  async createMarkup(input: NotesOnPanoramasInput) {
     await prisma.notesOnPanoramas.create({
-      data: coordinates,
+      data: input,
     })
   }
 

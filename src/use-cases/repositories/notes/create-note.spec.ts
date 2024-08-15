@@ -16,12 +16,12 @@ describe('Create Note Use Case', () => {
     const id = '12345678'
     await sut.execute({
       author: 'Jhon',
-      createdAt: new Date(),
+      created_at: new Date(),
       description: 'Descrição',
       equipment_tag: 'I-1502-BB-200',
       id,
       opportunity: 0,
-      equipmentId: null,
+      equipment_id: null,
     })
 
     const noteFind = await notesRepository.findById(id)
@@ -34,23 +34,23 @@ describe('Create Note Use Case', () => {
 
     await sut.execute({
       author: 'Jhon',
-      createdAt: new Date(),
+      created_at: new Date(),
       description: 'Descrição',
       equipment_tag: 'I-1502-BB-200',
       id,
       opportunity: 0,
-      equipmentId: null,
+      equipment_id: null,
     })
 
     await expect(() =>
       sut.execute({
         author: 'Jhon',
-        createdAt: new Date(),
+        created_at: new Date(),
         description: 'Descrição',
         equipment_tag: 'I-1502-BB-200',
         id,
         opportunity: 0,
-        equipmentId: null,
+        equipment_id: null,
       }),
     ).rejects.toBeInstanceOf(NoteAlreadyExistsError)
   })

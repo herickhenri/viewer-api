@@ -3,18 +3,24 @@ import { InMemoryEquipmentsRepository } from '../../../repositories/in-memory/in
 import { GetEquipmentUseCases } from './get-equipment'
 import { ResourceNotFoundError } from '../../errors/resource-not-found-error'
 import { createEquipment } from '@/utils/test/create-equipment'
+import { LocalImagesStorage } from '@/storage/local/local-images-storage'
 
 let equipmentsRepository: InMemoryEquipmentsRepository
+let imagesStorage: LocalImagesStorage
 let sut: GetEquipmentUseCases
 
 describe('Get Equipment Use Case', () => {
   beforeEach(() => {
     equipmentsRepository = new InMemoryEquipmentsRepository()
+    imagesStorage = new LocalImagesStorage()
     sut = new GetEquipmentUseCases(equipmentsRepository)
   })
 
   it('shoud be able to get equipment by id', async () => {
-    const { id } = await createEquipment({ equipmentsRepository })
+    const { id } = await createEquipment({
+      equipmentsRepository,
+      imagesStorage,
+    })
 
     const { equipment } = await sut.execute({ id })
 

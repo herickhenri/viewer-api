@@ -3,19 +3,28 @@ import { InMemoryPanoramasRepository } from '../../../repositories/in-memory/in-
 import { DeleteConnectionUseCases } from './delete-connection'
 import { createPanorama } from '@/utils/test/create-panorama'
 import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found-error'
+import { LocalImagesStorage } from '@/storage/local/local-images-storage'
 
 let panoramasRepository: InMemoryPanoramasRepository
+let imagesStorage: LocalImagesStorage
 let sut: DeleteConnectionUseCases
 
 describe('delete Connection Use Case', () => {
   beforeEach(() => {
     panoramasRepository = new InMemoryPanoramasRepository()
+    imagesStorage = new LocalImagesStorage()
     sut = new DeleteConnectionUseCases(panoramasRepository)
   })
 
   it('shoud be able to delete connection', async () => {
-    const { id: firstPanoramaId } = await createPanorama(panoramasRepository)
-    const { id: secondPanoramaId } = await createPanorama(panoramasRepository)
+    const { id: firstPanoramaId } = await createPanorama(
+      panoramasRepository,
+      imagesStorage,
+    )
+    const { id: secondPanoramaId } = await createPanorama(
+      panoramasRepository,
+      imagesStorage,
+    )
 
     const firstLink = {
       panorama_id: firstPanoramaId,

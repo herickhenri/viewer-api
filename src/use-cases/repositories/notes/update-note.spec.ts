@@ -17,22 +17,22 @@ describe('Update Note Use Case', () => {
 
     await notesRepository.create({
       author: 'Jhon',
-      createdAt: new Date(),
+      created_at: new Date(),
       description: 'Descrição',
       equipment_tag: 'I-1502-BB-200',
       id,
       opportunity: 0,
-      equipmentId: null,
+      equipment_id: null,
     })
 
     const updatedData = {
       author: 'Jhon updated',
-      createdAt: new Date(),
+      created_at: new Date(),
       description: 'description updated',
       equipment_tag: 'I-1502-BB-300',
       id,
       opportunity: 0,
-      equipmentId: 'newEquipmentId',
+      equipment_id: 'newEquipmentId',
     }
 
     await sut.execute(updatedData)
@@ -48,12 +48,12 @@ describe('Update Note Use Case', () => {
     await expect(() =>
       sut.execute({
         author: 'Jhon',
-        createdAt: new Date(),
+        created_at: new Date(),
         description: 'Descrição',
         equipment_tag: 'I-1502-BB-200',
         id,
         opportunity: 0,
-        equipmentId: null,
+        equipment_id: null,
       }),
     ).rejects.toBeInstanceOf(ResourceNotFoundError)
   })

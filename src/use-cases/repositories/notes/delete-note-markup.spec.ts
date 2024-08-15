@@ -25,26 +25,27 @@ describe('Delete Note Markup Use Case', () => {
 
     await notesRepository.create({
       author: 'Jhon',
-      createdAt: new Date(),
+      created_at: new Date(),
       description: 'Descrição',
       equipment_tag: 'I-1502-BB-200',
       id,
       opportunity: 0,
-      equipmentId: null,
+      equipment_id: null,
     })
 
     await notesRepository.createMarkup({
       note_id: id,
       ...connection,
     })
+
     noteFind = await notesRepository.findById(id)
 
-    expect(noteFind?.NotesOnPanoramas).toStrictEqual([connection])
+    expect(noteFind?.panoramas).toStrictEqual([connection])
 
     await sut.execute({ note_id: id, panorama_id: connection.panorama_id })
     noteFind = await notesRepository.findById(id)
 
-    expect(noteFind?.NotesOnPanoramas).toEqual([])
+    expect(noteFind?.panoramas).toEqual([])
   })
 
   it('shoud not be able delete markup with not existing', async () => {
@@ -62,12 +63,12 @@ describe('Delete Note Markup Use Case', () => {
 
     await notesRepository.create({
       author: 'Jhon',
-      createdAt: new Date(),
+      created_at: new Date(),
       description: 'Descrição',
       equipment_tag: 'I-1502-BB-200',
       id,
       opportunity: 0,
-      equipmentId: null,
+      equipment_id: null,
     })
 
     const firstConnection = {
@@ -93,8 +94,8 @@ describe('Delete Note Markup Use Case', () => {
 
     noteFind = await notesRepository.findById(id)
 
-    expect(noteFind?.NotesOnPanoramas).toContainEqual(firstConnection)
-    expect(noteFind?.NotesOnPanoramas).toContainEqual(secondConnection)
+    expect(noteFind?.panoramas).toContainEqual(firstConnection)
+    expect(noteFind?.panoramas).toContainEqual(secondConnection)
 
     await sut.execute({
       note_id: id,
@@ -103,6 +104,6 @@ describe('Delete Note Markup Use Case', () => {
 
     noteFind = await notesRepository.findById(id)
 
-    expect(noteFind?.NotesOnPanoramas).toEqual([firstConnection])
+    expect(noteFind?.panoramas).toEqual([firstConnection])
   })
 })

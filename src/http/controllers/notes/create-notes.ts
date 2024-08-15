@@ -10,12 +10,12 @@ export async function createNotes(
   const notesBodySchema = z.array(
     z.object({
       id: z.string(),
-      createdAt: z.coerce.date(),
+      created_at: z.coerce.date(),
       description: z.string(),
       equipment_tag: z.string(),
       author: z.string(),
       opportunity: z.number(),
-      equipmentId: z.string().nullable().default(null),
+      equipment_id: z.string().nullable().default(null),
     }),
   )
 

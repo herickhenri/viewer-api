@@ -1,7 +1,7 @@
+import { Image, ImagesStorage } from '@/storage/images-storage'
 import {
   Equipment,
   EquipmentsRepository,
-  UpdateEquipment,
 } from '../../../repositories/equipments-repository'
 import { checkTagFormat } from '../../../utils/check-tag-format'
 import { EquipmentAlreadyExistsError } from '../../errors/equipment-already-exists-error'
@@ -10,7 +10,19 @@ import { ResourceNotFoundError } from '../../errors/resource-not-found-error'
 
 interface updateEquipmentRequest {
   id: string
-  data: UpdateEquipment
+  data: {
+    name?: string
+    description?: string
+    tag?: string
+    files?: {
+      buffer: Buffer
+      contentType: string
+    }[]
+    photos?: {
+      key: string
+      link: string
+    }[]
+  }
 }
 
 interface updateEquipmentResponse {
@@ -18,7 +30,10 @@ interface updateEquipmentResponse {
 }
 
 export class UpdateEquipmentUseCases {
-  constructor(private equipmentsRepository: EquipmentsRepository) {}
+  constructor(
+    private equipmentsRepository: EquipmentsRepository,
+    private imagesStorage: ImagesStorage,
+  ) {}
 
   async execute({
     data,
@@ -47,8 +62,58 @@ export class UpdateEquipmentUseCases {
       }
     }
 
-    const equipment = await this.equipmentsRepository.update(data, id)
+    const photosAlreadyExists = data.photos?.every((dataPhoto) =>
+      equipmentFound.photos?.some(
+        (equipPhoto) =>
+          equipPhoto.key === dataPhoto.key &&
+          equipPhoto.link === dataPhoto.link,
+      ),
+    )
 
-    return { equipment }
+    if (!photosAlreadyExists) {
+      throw new ResourceNotFoundError()
+    }
+
+    const photosKept = data.photos
+
+    let photos: Image[] | undefined = photosKept
+    let uploadedPhotos: Image[] | undefined
+
+    const photosToDelete: Image[] | undefined = equipmentFound.photos?.filter(
+      (photo) => photosKept?.every((photoKept) => photoKept.key !== photo.key),
+    )
+
+    if (data.files?.length) {
+      uploadedPhotos = await this.imagesStorage.uploadMany(data.files)
+
+      photos = photos ? photos.concat(uploadedPhotos) : uploadedPhotos
+    }
+
+    try {
+      const equipment = await this.equipmentsRepository.update(
+        {
+          description: data.description,
+          name: data.name,
+          tag: data.tag,
+          photos,
+        },
+        id,
+      )
+
+      if (photosToDelete) {
+        const oldKeys = photosToDelete.map(({ key }) => key)
+        oldKeys && (await this.imagesStorage.deleteMany(oldKeys))
+      }
+
+      return { equipment }
+    } catch {
+      // if error after upload images, it`s necessary to delete the saved images
+      if (uploadedPhotos) {
+        const keys = uploadedPhotos.map(({ key }) => key)
+        await this.imagesStorage.deleteMany(keys)
+      }
+
+      throw new Error()
+    }
   }
 }

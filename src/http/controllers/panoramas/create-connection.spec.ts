@@ -1,6 +1,7 @@
 import request from 'supertest'
 import { app } from '../../../app'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import path from 'node:path'
 
 describe('Create Connection (e2e)', () => {
   beforeAll(async () => {
@@ -12,20 +13,24 @@ describe('Create Connection (e2e)', () => {
   })
 
   it('shoud be able to create connection', async () => {
+    const filePath = path.resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      'utils',
+      'test',
+      'test.png',
+    )
+
     const firstPanoramaResponse = await request(app.server)
       .post('/panorama')
-      .send({
-        name: 'panorama-1',
-        image_link: 'example-link',
-        image_key: 'example-key',
-      })
+      .field('name', 'panorama-1')
+      .attach('file', filePath)
     const secondPanoramaResponse = await request(app.server)
       .post('/panorama')
-      .send({
-        name: 'panorama-1',
-        image_link: 'example-link',
-        image_key: 'example-key',
-      })
+      .field('name', 'panorama-1')
+      .attach('file', filePath)
 
     const firstPanoramaId = firstPanoramaResponse.body.panorama.id
     const secondPanoramaId = secondPanoramaResponse.body.panorama.id

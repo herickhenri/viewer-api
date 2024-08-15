@@ -2,13 +2,12 @@ export const acceptedTypes = ['image/png', 'image/jpg', 'image/jpeg']
 
 export type File = {
   buffer: Buffer
-  name: string
+  name?: string
   contentType: string
 }
 
 export type Image = {
   key: string
-  name: string
   link: string
 }
 

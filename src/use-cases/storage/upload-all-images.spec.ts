@@ -27,7 +27,6 @@ describe('Upload Image Use Case', () => {
       {
         buffer,
         contentType: 'image/png',
-        name: 'upload-all-images-test',
       },
     ]
 
@@ -35,7 +34,6 @@ describe('Upload Image Use Case', () => {
 
     expect(images).toEqual([
       {
-        name: 'upload-all-images-test',
         key: expect.anything(),
         link: expect.anything(),
       },

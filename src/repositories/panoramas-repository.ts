@@ -1,36 +1,36 @@
-import { Prisma } from '@prisma/client'
-
 export type Panorama = {
   id: string
   name: string
-  image_key: string
-  image_link: string
-  gps_x: Prisma.Decimal | null
-  gps_y: Prisma.Decimal | null
-  markings?: {
+  images: {
+    key: string
+    link: string
+    quality: number
+  }[]
+  equipments?: {
     coord_x: number
     coord_y: number
     equipment_id: string
+  }[]
+  notes?: {
+    coord_x: number
+    coord_y: number
+    note_id: string
   }[]
   links?: {
     coord_x: number
     coord_y: number
     panorama_connect_id: string
   }[]
-  NotesOnPanoramas?: {
-    coord_x: number
-    coord_y: number
-    note_id: string
-  }[]
 }
 
 export type PanoramaInput = {
   name: string
-  image_key: string
-  image_link: string
-  gps_x?: number
-  gps_y?: number
-  markings?: {
+  images: {
+    key: string
+    link: string
+    quality: number
+  }[]
+  equipments?: {
     coord_x: number
     coord_y: number
     equipment_id: string
@@ -44,11 +44,12 @@ export type PanoramaInput = {
 
 export type UpdatePanorama = {
   name?: string
-  image_key?: string
-  image_link?: string
-  gps_x?: number
-  gps_y?: number
-  markings?: {
+  images?: {
+    key: string
+    link: string
+    quality: number
+  }[]
+  equipments?: {
     coord_x: number
     coord_y: number
     equipment_id: string

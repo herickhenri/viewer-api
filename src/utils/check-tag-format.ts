@@ -26,5 +26,17 @@ export function checkTagFormat(tag: string) {
     return false
   }
 
+  // check if the fields "area code" and "sequential number" are numbers
+  if (isNaN(Number(areaCode)) || isNaN(Number(seqNumber))) {
+    return false
+  }
+
+  // check is the fields only have characters from A to Z
+  const alphabetRegex = /^[A-Z]+$/
+
+  if (!alphabetRegex.test(unitId) || !alphabetRegex.test(equipmentCode)) {
+    return false
+  }
+
   return true
 }

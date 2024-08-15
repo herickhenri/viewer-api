@@ -2,38 +2,74 @@ import { FastifyRequest, FastifyReply } from 'fastify'
 import { UploadingImageError } from '@/use-cases/errors/uploading-image-error'
 import { UnacceptedFileFormat } from '@/use-cases/errors/unaccepted-file-format'
 import { makeUploadImageUseCases } from '@/use-cases/factories/make-upload-image-use-cases'
+import { writeFile } from 'fs/promises'
+import { join } from 'path'
+import util from 'node:util'
+import { pipeline } from 'node:stream'
+import fs from 'fs'
+
+const pump = util.promisify(pipeline)
+
+type File = {
+  buffer: Buffer
+  name: string
+  contentType: string
+}
 
 export async function uploadImage(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  const data = await request.file()
+  const parts = request.parts()
+  const data: Record<string, string> = {}
+  const files: File[] = []
 
-  if (!data) {
-    throw new UploadingImageError()
+  for await (const part of parts) {
+    if (part.type === 'file') {
+      const image = {
+        buffer: await part.toBuffer(),
+        name: part.fieldname,
+        contentType: part.mimetype,
+      }
+      files.push(image)
+    } else {
+      // part.type === 'field
+      data[part.fieldname] = String(part.value)
+    }
   }
 
-  const buffer = await data.toBuffer()
-  const contentType = data.mimetype
-  const name = data.filename
+  reply.send({ data, files })
 
-  try {
-    const uploadImageUseCases = makeUploadImageUseCases()
+  // Save the file to disk
+  // await writeFile(savePath, file)
 
-    const image = await uploadImageUseCases.execute({
-      name,
-      buffer,
-      contentType,
-    })
+  // const data = await request.file()
 
-    return reply.status(201).send(image)
-  } catch (err) {
-    if (err instanceof UploadingImageError) {
-      return reply.status(400).send({ message: err.message })
-    }
-    if (err instanceof UnacceptedFileFormat) {
-      return reply.status(400).send({ message: err.message })
-    }
-    throw err
-  }
+  // if (!data) {
+  //   throw new UploadingImageError()
+  // }
+
+  // const buffer = await data.toBuffer()
+  // const contentType = data.mimetype
+  // const name = data.filename
+
+  // try {
+  //   const uploadImageUseCases = makeUploadImageUseCases()
+
+  //   const image = await uploadImageUseCases.execute({
+  //     name,
+  //     buffer,
+  //     contentType,
+  //   })
+
+  //   return reply.status(201).send(image)
+  // } catch (err) {
+  //   if (err instanceof UploadingImageError) {
+  //     return reply.status(400).send({ message: err.message })
+  //   }
+  //   if (err instanceof UnacceptedFileFormat) {
+  //     return reply.status(400).send({ message: err.message })
+  //   }
+  //   throw err
+  // }
 }

@@ -1,6 +1,7 @@
 import request from 'supertest'
 import { app } from '../../../app'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import path from 'node:path'
 
 describe('Create Panorama (e2e)', () => {
   beforeAll(async () => {
@@ -12,13 +13,20 @@ describe('Create Panorama (e2e)', () => {
   })
 
   it('shoud be able to create panorama', async () => {
-    const response = await request(app.server).post('/panorama').send({
-      name: 'panorama-1',
-      image_link: 'example-link',
-      image_key: 'example-key',
-      gps_x: 100,
-      gps_y: 150,
-    })
+    const filePath = path.resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      'utils',
+      'test',
+      'test.png',
+    )
+
+    const response = await request(app.server)
+      .post('/panorama')
+      .field('name', 'panorama-1')
+      .attach('file', filePath)
 
     expect(response.statusCode).toEqual(201)
   })

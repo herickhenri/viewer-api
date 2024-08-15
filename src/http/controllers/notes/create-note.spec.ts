@@ -14,10 +14,10 @@ describe('Create Note (e2e)', () => {
   it('shoud be able to create note', async () => {
     const response = await request(app.server).post('/note').send({
       author: 'Jhon',
-      createdAt: new Date(),
-      description: 'Descrição',
-      equipment_tag: 'I-1502-BB-200',
-      id: '12345678',
+      created_at: new Date(),
+      description: 'example-description',
+      equipment_tag: 'A-1111-BB-222',
+      id: 'example-id',
       opportunity: 0,
     })
 

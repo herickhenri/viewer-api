@@ -17,7 +17,7 @@ describe('Create Notes (e2e)', () => {
       .send([
         {
           author: 'Jhon',
-          createdAt: new Date(),
+          created_at: new Date(),
           description: 'Descrição',
           equipment_tag: 'I-1502-BB-200',
           id: '12345678',

@@ -3,18 +3,21 @@ import { InMemoryPanoramasRepository } from '../../../repositories/in-memory/in-
 import { UpdatePanoramaUseCases } from './update-panorama'
 import { ResourceNotFoundError } from '../../errors/resource-not-found-error'
 import { createPanorama } from '@/utils/test/create-panorama'
+import { LocalImagesStorage } from '@/storage/local/local-images-storage'
 
 let panoramasRepository: InMemoryPanoramasRepository
+let imagesStorage: LocalImagesStorage
 let sut: UpdatePanoramaUseCases
 
 describe('Update Panorama Use Case', () => {
   beforeEach(() => {
     panoramasRepository = new InMemoryPanoramasRepository()
-    sut = new UpdatePanoramaUseCases(panoramasRepository)
+    imagesStorage = new LocalImagesStorage()
+    sut = new UpdatePanoramaUseCases(panoramasRepository, imagesStorage)
   })
 
   it('shoud be able to update panorama', async () => {
-    const { id } = await createPanorama(panoramasRepository)
+    const { id } = await createPanorama(panoramasRepository, imagesStorage)
 
     const updatePanorama = {
       name: 'Piso dos dregs',
@@ -37,10 +40,10 @@ describe('Update Panorama Use Case', () => {
   })
 
   it('shoud be able update panorama with markings empty', async () => {
-    const { id } = await createPanorama(panoramasRepository)
+    const { id } = await createPanorama(panoramasRepository, imagesStorage)
 
-    const { panorama } = await sut.execute({ data: { markings: [] }, id })
+    const { panorama } = await sut.execute({ data: { equipments: [] }, id })
 
-    expect(panorama.markings).toStrictEqual([])
+    expect(panorama.equipments).toStrictEqual([])
   })
 })

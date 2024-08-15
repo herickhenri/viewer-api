@@ -1,6 +1,7 @@
 import { app } from '@/app'
 import request from 'supertest'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import path from 'node:path'
 
 describe('Create Note Markup (e2e)', () => {
   beforeAll(async () => {
@@ -12,22 +13,30 @@ describe('Create Note Markup (e2e)', () => {
   })
 
   it('shoud be able to create note markup', async () => {
-    const note_id = '12345678'
+    const filePath = path.resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      'utils',
+      'test',
+      'test.png',
+    )
+
+    const note_id = 'example-id'
     await request(app.server).post('/note').send({
       author: 'Jhon',
-      createdAt: new Date(),
-      description: 'Descrição',
-      equipment_tag: 'I-1502-BB-200',
+      created_at: new Date(),
+      description: 'Example description',
+      equipment_tag: 'A-1111-BB-222',
       id: note_id,
       opportunity: 0,
     })
-    const responsePanorama = await request(app.server).post('/panorama').send({
-      name: 'panorama-1',
-      image_link: 'example-link',
-      image_key: 'example-key',
-      gps_x: 100,
-      gps_y: 150,
-    })
+    const responsePanorama = await request(app.server)
+      .post('/panorama')
+      .field('name', 'panorama-1')
+      .attach('file', filePath)
+
     const { id: panorama_id }: { id: string } = responsePanorama.body.panorama
 
     const response = await request(app.server).post('/note/markup').send({

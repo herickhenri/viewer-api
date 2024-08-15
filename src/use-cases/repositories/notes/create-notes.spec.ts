@@ -16,12 +16,12 @@ describe('Create Notes Use Case', () => {
     const notes = [
       {
         author: 'Jhon',
-        createdAt: new Date(),
+        created_at: new Date(),
         description: 'Descrição',
         equipment_tag: 'I-1502-BB-200',
         id: '12345678',
         opportunity: 0,
-        equipmentId: null,
+        equipment_id: null,
       },
     ]
     await sut.execute(notes)
@@ -36,12 +36,12 @@ describe('Create Notes Use Case', () => {
 
     const noteData = {
       author: 'Jhon',
-      createdAt: new Date(),
+      created_at: new Date(),
       description: 'Descrição',
       equipment_tag: 'I-1502-BB-200',
       id,
       opportunity: 0,
-      equipmentId: null,
+      equipment_id: null,
     }
 
     await notesRepository.create(noteData)

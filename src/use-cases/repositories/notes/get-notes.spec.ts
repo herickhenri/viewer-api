@@ -15,14 +15,14 @@ describe('Get Notes Use Case', () => {
     const id = '12345678'
     const noteData = {
       author: 'Jhon',
-      createdAt: new Date(),
+      created_at: new Date(),
       description: 'Descrição',
       equipment_tag: 'I-1502-BB-200',
       id,
       opportunity: 0,
       coord_x: null,
       coord_y: null,
-      equipmentId: null,
+      equipment_id: null,
       panoramaId: null,
     }
 

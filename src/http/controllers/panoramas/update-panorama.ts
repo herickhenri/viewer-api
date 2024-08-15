@@ -3,6 +3,11 @@ import { z } from 'zod'
 import { ResourceNotFoundError } from '../../../use-cases/errors/resource-not-found-error'
 import { makeUpdatePanoramaUseCases } from '../../../use-cases/factories/make-update-panorama-use-cases'
 
+type FileFormat = {
+  buffer: Buffer
+  contentType: string
+}
+
 export async function updatePanorama(
   request: FastifyRequest,
   reply: FastifyReply,
@@ -10,34 +15,60 @@ export async function updatePanorama(
   const panoramaParamsSchema = z.object({
     id: z.string(),
   })
+  const equipmentsSchema = z.array(
+    z.object({
+      coord_x: z.number(),
+      coord_y: z.number(),
+      equipment_id: z.string(),
+    }),
+  )
+  const linksSchema = z.array(
+    z.object({
+      coord_x: z.number(),
+      coord_y: z.number(),
+      panorama_connect_id: z.string(),
+    }),
+  )
   const panoramaBodySchema = z.object({
     name: z.string().optional(),
-    image_key: z.string().optional(),
-    image_link: z.string().optional(),
-    gps_x: z.number().optional(),
-    gps_y: z.number().optional(),
-    markings: z
-      .array(
-        z.object({
-          coord_x: z.number(),
-          coord_y: z.number(),
-          equipment_id: z.string(),
-        }),
-      )
+    file: z
+      .object({
+        buffer: z.instanceof(Buffer),
+        contentType: z.string(),
+      })
+      .optional(),
+    equipments: z
+      .string()
+      .transform((json) => JSON.parse(json))
+      .pipe(equipmentsSchema)
       .optional(),
     links: z
-      .array(
-        z.object({
-          coord_x: z.number(),
-          coord_y: z.number(),
-          panorama_connect_id: z.string(),
-        }),
-      )
+      .string()
+      .transform((json) => JSON.parse(json))
+      .pipe(linksSchema)
       .optional(),
   })
 
+  const parts = request.parts()
+  const json: Record<string, unknown> = {}
+  let file: FileFormat | undefined
+
+  for await (const part of parts) {
+    if (part.type === 'file') {
+      const image = {
+        buffer: await part.toBuffer(),
+        contentType: part.mimetype,
+      }
+      file = image
+    } else {
+      // part.type === 'field'
+      json[part.fieldname] = part.value
+    }
+  }
+
+  const data = panoramaBodySchema.parse({ ...json, file })
   const { id } = panoramaParamsSchema.parse(request.params)
-  const data = panoramaBodySchema.parse(request.body)
+
   try {
     const updatePanoramaUseCases = makeUpdatePanoramaUseCases()
 
