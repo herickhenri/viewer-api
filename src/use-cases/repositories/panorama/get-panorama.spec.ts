@@ -22,6 +22,10 @@ describe('Get Panorama Use Case', () => {
     const { panorama } = await sut.execute({ id })
 
     expect(id).toStrictEqual(panorama.id)
+
+    // clean images
+    const keys = panorama.images.map(({ key }) => key)
+    imagesStorage.deleteMany(keys)
   })
 
   it('shoud not be able to get panorama that does not exist', async () => {

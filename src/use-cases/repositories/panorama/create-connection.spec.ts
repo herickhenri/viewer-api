@@ -5,13 +5,11 @@ import { createPanorama } from '@/utils/test/create-panorama'
 import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found-error'
 import { LocalImagesStorage } from '@/storage/local/local-images-storage'
 import { InMemoryConnectionsRepository } from '@/repositories/in-memory/in-memory-connections-repository'
-import { DeletePanoramaUseCases } from './delete-panorama'
 
 let panoramasRepository: InMemoryPanoramasRepository
 let connectionsRepository: InMemoryConnectionsRepository
 let imagesStorage: LocalImagesStorage
 let sut: CreateConnectionUseCases
-let deletePanorama: DeletePanoramaUseCases
 
 describe('Create Connection Use Case', () => {
   beforeEach(() => {
@@ -22,22 +20,13 @@ describe('Create Connection Use Case', () => {
       connectionsRepository,
       panoramasRepository,
     )
-
-    deletePanorama = new DeletePanoramaUseCases(
-      panoramasRepository,
-      imagesStorage,
-    )
   })
 
   it('shoud be able to create connection', async () => {
-    const { id: firstPanoramaId } = await createPanorama(
-      panoramasRepository,
-      imagesStorage,
-    )
-    const { id: secondPanoramaId } = await createPanorama(
-      panoramasRepository,
-      imagesStorage,
-    )
+    const { id: firstPanoramaId, images: firstPanoramaImages } =
+      await createPanorama(panoramasRepository, imagesStorage)
+    const { id: secondPanoramaId, images: secondPanoramaImages } =
+      await createPanorama(panoramasRepository, imagesStorage)
 
     const firstConnection = {
       yaw: 100,
@@ -67,8 +56,10 @@ describe('Create Connection Use Case', () => {
     expect(secondConnectionData).toEqual(secondConnection)
 
     // clean images created
-    await deletePanorama.execute({ id: firstPanoramaId })
-    await deletePanorama.execute({ id: secondPanoramaId })
+    const firstKeys = firstPanoramaImages.map(({ key }) => key)
+    const secondKeys = secondPanoramaImages.map(({ key }) => key)
+    const allKeys = firstKeys.concat(secondKeys)
+    await imagesStorage.deleteMany(allKeys)
   })
   it('shoud not be able to create connection if panoramaId invalid', async () => {
     const firstPanoramaId = 'invalid-id'

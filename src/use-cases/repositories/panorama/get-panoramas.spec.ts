@@ -16,10 +16,17 @@ describe('Get Panoramas Use Case', () => {
   })
 
   it('shoud be able to get panoramas', async () => {
-    await createPanorama(panoramasRepository, imagesStorage)
+    const panoramaCreated = await createPanorama(
+      panoramasRepository,
+      imagesStorage,
+    )
 
     const { panoramas } = await sut.execute()
 
-    expect(panoramas).toBeTruthy()
+    expect(panoramas).toEqual([panoramaCreated])
+
+    // clean images
+    const keys = panoramaCreated.images.map(({ key }) => key)
+    imagesStorage.deleteMany(keys)
   })
 })

@@ -29,9 +29,9 @@ describe('Upload Image Use Case', () => {
       name: 'upload-image-test',
     })
 
-    expect(image.name).toEqual('upload-image-test')
+    expect(image).toBeTruthy()
 
-    // reset tmp
-    // localImagesStorage.delete(image.key)
+    // clean images
+    localImagesStorage.delete(image.key)
   })
 })

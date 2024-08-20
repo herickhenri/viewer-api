@@ -50,8 +50,8 @@ describe('Create Panorama Use Case', () => {
       images: panorama.images,
     })
 
-    // clean uploads
-    const allKeys = panorama.images.map(({ key }) => key)
-    allKeys && (await imagesStorage.deleteMany(allKeys))
+    // clean images
+    const keys = panorama.images.map(({ key }) => key)
+    await imagesStorage.deleteMany(keys)
   })
 })

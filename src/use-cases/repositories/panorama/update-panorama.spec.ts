@@ -17,7 +17,10 @@ describe('Update Panorama Use Case', () => {
   })
 
   it('shoud be able to update panorama', async () => {
-    const { id } = await createPanorama(panoramasRepository, imagesStorage)
+    const { id, images } = await createPanorama(
+      panoramasRepository,
+      imagesStorage,
+    )
 
     const updatePanorama = {
       name: 'Piso dos dregs',
@@ -25,6 +28,10 @@ describe('Update Panorama Use Case', () => {
     const { panorama } = await sut.execute({ data: updatePanorama, id })
 
     expect(panorama.name).toBe('Piso dos dregs')
+
+    // clean images
+    const keys = images.map(({ key }) => key)
+    imagesStorage.deleteMany(keys)
   })
 
   it('shoud not be able to update non-existing panorama', async () => {
@@ -40,10 +47,17 @@ describe('Update Panorama Use Case', () => {
   })
 
   it('shoud be able update panorama with markings empty', async () => {
-    const { id } = await createPanorama(panoramasRepository, imagesStorage)
+    const { id, images } = await createPanorama(
+      panoramasRepository,
+      imagesStorage,
+    )
 
     const { panorama } = await sut.execute({ data: { equipments: [] }, id })
 
     expect(panorama.equipments).toStrictEqual([])
+
+    // clean images
+    const keys = images.map(({ key }) => key)
+    imagesStorage.deleteMany(keys)
   })
 })

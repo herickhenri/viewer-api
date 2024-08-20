@@ -62,6 +62,12 @@ describe('delete Connection Use Case', () => {
 
     expect(firstConnectionIsDeleted).toStrictEqual(null)
     expect(secondConnectionIsDeleted).toStrictEqual(null)
+
+    // clean images created
+    const firstKeys = firstPanorama.images.map(({ key }) => key)
+    const secondKeys = secondPanorama.images.map(({ key }) => key)
+    const allKeys = firstKeys.concat(secondKeys)
+    await imagesStorage.deleteMany(allKeys)
   })
   it('shoud not be able to delete connection if panoramaId invalid', async () => {
     const firstConnection = {

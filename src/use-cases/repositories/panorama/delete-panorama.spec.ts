@@ -4,6 +4,7 @@ import { DeletePanoramaUseCases } from './delete-panorama'
 import { ResourceNotFoundError } from '../../errors/resource-not-found-error'
 import { createPanorama } from '@/utils/test/create-panorama'
 import { LocalImagesStorage } from '@/storage/local/local-images-storage'
+import fs from 'node:fs/promises'
 
 let panoramasRepository: InMemoryPanoramasRepository
 let imagesStorage: LocalImagesStorage
@@ -17,13 +18,24 @@ describe('Delete Panorama Use Case', () => {
   })
 
   it('shoud be able to delete panorama', async () => {
-    const { id } = await createPanorama(panoramasRepository, imagesStorage)
+    const { id, images } = await createPanorama(
+      panoramasRepository,
+      imagesStorage,
+    )
 
     await sut.execute({ id })
 
     const panorama = await panoramasRepository.findById(id)
 
     expect(panorama).toBeNull()
+
+    await expect(() =>
+      Promise.all(
+        images.map(async ({ link }) => {
+          await fs.access(link)
+        }),
+      ),
+    ).rejects.toBeInstanceOf(Error)
   })
 
   it('shoud not be able to delete non-existing panorama', async () => {
