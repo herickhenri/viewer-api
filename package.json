@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "engines": {
-    "node": "18"
-  },
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/server.ts",
@@ -48,7 +45,6 @@
     "@fastify/multipart": "8.1.0",
     "@prisma/client": "5.8.0",
     "aws-sdk": "2.1543.0",
-    "axios": "1.7.4",
     "dotenv": "16.3.1",
     "fastify": "4.25.2",
     "form-auto-content": "3.2.1",
