@@ -8,14 +8,7 @@ export async function createPanorama(
   panoramasRepository: InMemoryPanoramasRepository,
   imagesStorage: LocalImagesStorage,
 ) {
-  const filePath = path.resolve(
-    __dirname,
-    '..',
-    '..',
-    'utils',
-    'test',
-    'panorama-example.jpeg',
-  )
+  const filePath = path.resolve(__dirname, 'panorama-example.jpeg')
 
   const buffer = fs.readFileSync(filePath)
 
@@ -32,8 +25,8 @@ export async function createPanorama(
     },
     equipments: [
       {
-        coord_x: 500,
-        coord_y: 340,
+        yaw: 100,
+        pitch: 100,
         equipment_id: 'equipment-1',
       },
     ],

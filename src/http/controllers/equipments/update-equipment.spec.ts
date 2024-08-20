@@ -31,13 +31,9 @@ describe('Update Equipment (e2e)', () => {
       .attach('image-example', filePath)
     const { id }: { id: string } = createResponse.body.equipment
 
-    const updateEquipment = {
-      name: 'New name example',
-    }
-
     const response = await request(app.server)
       .patch(`/equipment/${id}`)
-      .send(updateEquipment)
+      .field('name', 'New name example')
 
     expect(response.statusCode).toEqual(200)
     expect(response.body.equipment.name).toEqual('New name example')

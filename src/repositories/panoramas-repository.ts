@@ -7,19 +7,26 @@ export type Panorama = {
     quality: number
   }[]
   equipments?: {
-    coord_x: number
-    coord_y: number
+    yaw: number
+    pitch: number
     equipment_id: string
   }[]
   notes?: {
-    coord_x: number
-    coord_y: number
+    yaw: number
+    pitch: number
     note_id: string
   }[]
-  links?: {
-    coord_x: number
-    coord_y: number
-    panorama_connect_id: string
+  connections_from?: {
+    yaw: number
+    pitch: number
+    connected_to_id: string
+    connected_from_id: string
+  }[]
+  connections_to?: {
+    yaw: number
+    pitch: number
+    connected_to_id: string
+    connected_from_id: string
   }[]
 }
 
@@ -31,14 +38,9 @@ export type PanoramaInput = {
     quality: number
   }[]
   equipments?: {
-    coord_x: number
-    coord_y: number
+    yaw: number
+    pitch: number
     equipment_id: string
-  }[]
-  links?: {
-    coord_x: number
-    coord_y: number
-    panorama_connect_id: string
   }[]
 }
 
@@ -50,29 +52,10 @@ export type UpdatePanorama = {
     quality: number
   }[]
   equipments?: {
-    coord_x: number
-    coord_y: number
+    yaw: number
+    pitch: number
     equipment_id: string
   }[]
-  links?: {
-    coord_x: number
-    coord_y: number
-    panorama_connect_id: string
-  }[]
-}
-
-export type Link = {
-  panorama_connect_id: string
-  panorama_id: string
-  coord_x: number
-  coord_y: number
-}
-
-export type Connection = [Link, Link]
-
-export type IdsOfPanoramaConnectionRelations = {
-  panorama_id: string
-  panorama_connect_id: string
 }
 
 export interface PanoramasRepository {
@@ -81,8 +64,4 @@ export interface PanoramasRepository {
   create(data: PanoramaInput): Promise<Panorama>
   update(data: UpdatePanorama, id: string): Promise<Panorama>
   delete(id: string): Promise<void>
-  createConnection(connection: Connection): Promise<void>
-  deleteConnection(
-    idsOfPanoramaConnectionRelations: IdsOfPanoramaConnectionRelations,
-  ): Promise<void>
 }

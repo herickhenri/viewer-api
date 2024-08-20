@@ -32,12 +32,13 @@ model EquipmentPhoto {
 }
 
 model Panorama {
-  id         String                 @id @default(cuid())
-  name       String
-  images     PanoramaImage[]
-  equipments EquipmentsOnPanorama[]
-  links      Link[]
-  notes      NotesOnPanoramas[]
+  id               String                 @id @default(cuid())
+  name             String
+  images           PanoramaImage[]
+  equipments       EquipmentsOnPanorama[]
+  notes            NoteOnPanorama[]
+  connections_from Connection[]           @relation("connection_from")
+  connections_to   Connection[]           @relation("connection_to")
 
   @@map("panoramas")
 }
@@ -52,6 +53,18 @@ model PanoramaImage {
   @@map("panorama_images")
 }
 
+model Connection {
+  yaw               Float
+  pitch             Float
+  connected_from    Panorama @relation("connection_from", fields: [connected_from_id], references: [id])
+  connected_from_id String
+  connected_to      Panorama @relation("connection_to", fields: [connected_to_id], references: [id])
+  connected_to_id   String
+
+  @@id([connected_from_id, connected_to_id])
+  @@map("connections")
+}
+
 model Note {
   id            String   @id
   created_at    DateTime
@@ -60,28 +73,16 @@ model Note {
   author        String
   opportunity   Int
 
-  equipment    Equipment?         @relation(fields: [equipment_id], references: [id])
+  equipment    Equipment?       @relation(fields: [equipment_id], references: [id])
   equipment_id String?
-  panoramas    NotesOnPanoramas[]
+  panoramas    NoteOnPanorama[]
 
   @@map("notes")
 }
 
-model Link {
-  coord_x             Int
-  coord_y             Int
-  panorama_connect_id String
-
-  panorama    Panorama @relation(fields: [panorama_id], references: [id], onDelete: Cascade)
-  panorama_id String
-
-  @@id([panorama_id, panorama_connect_id])
-  @@map("links")
-}
-
 model EquipmentsOnPanorama {
-  coord_x Int
-  coord_y Int
+  yaw   Float
+  pitch Float
 
   equipment    Equipment @relation(fields: [equipment_id], references: [id], onDelete: Cascade)
   equipment_id String
@@ -92,9 +93,9 @@ model EquipmentsOnPanorama {
   @@id([panorama_id, equipment_id])
 }
 
-model NotesOnPanoramas {
-  coord_x Int
-  coord_y Int
+model NoteOnPanorama {
+  yaw   Float
+  pitch Float
 
   note    Note   @relation(fields: [note_id], references: [id], onDelete: Cascade)
   note_id String
@@ -103,4 +104,5 @@ model NotesOnPanoramas {
   panorama_id String
 
   @@id([note_id, panorama_id])
+  @@map("notes_on_panoramas")
 }

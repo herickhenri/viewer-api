@@ -7,7 +7,7 @@ import {
 import { randomUUID } from 'node:crypto'
 
 export class InMemoryEquipmentsRepository implements EquipmentsRepository {
-  public equipments: Equipment[] = []
+  private equipments: Equipment[] = []
 
   async findByTag(tag: string) {
     const equipment = this.equipments.find((equipment) => equipment.tag === tag)

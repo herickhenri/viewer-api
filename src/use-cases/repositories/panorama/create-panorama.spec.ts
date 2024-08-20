@@ -36,8 +36,8 @@ describe('Create Panorama Use Case', () => {
       },
       equipments: [
         {
-          coord_x: 500,
-          coord_y: 340,
+          yaw: 500,
+          pitch: 340,
           equipment_id: 'equipment-1',
         },
       ],
@@ -47,7 +47,6 @@ describe('Create Panorama Use Case', () => {
       name: data.name,
       equipments: data.equipments,
       id: panorama.id,
-      links: undefined,
       images: panorama.images,
     })
 

@@ -10,8 +10,8 @@ export async function createNoteMarkup(
   const markupBodySchema = z.object({
     panorama_id: z.string(),
     note_id: z.string(),
-    coord_x: z.number(),
-    coord_y: z.number(),
+    yaw: z.number(),
+    pitch: z.number(),
   })
 
   const data = markupBodySchema.parse(request.body)

@@ -4,16 +4,29 @@ import { CreateConnectionUseCases } from './create-connection'
 import { createPanorama } from '@/utils/test/create-panorama'
 import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found-error'
 import { LocalImagesStorage } from '@/storage/local/local-images-storage'
+import { InMemoryConnectionsRepository } from '@/repositories/in-memory/in-memory-connections-repository'
+import { DeletePanoramaUseCases } from './delete-panorama'
 
 let panoramasRepository: InMemoryPanoramasRepository
+let connectionsRepository: InMemoryConnectionsRepository
 let imagesStorage: LocalImagesStorage
 let sut: CreateConnectionUseCases
+let deletePanorama: DeletePanoramaUseCases
 
 describe('Create Connection Use Case', () => {
   beforeEach(() => {
+    connectionsRepository = new InMemoryConnectionsRepository()
     panoramasRepository = new InMemoryPanoramasRepository()
     imagesStorage = new LocalImagesStorage()
-    sut = new CreateConnectionUseCases(panoramasRepository)
+    sut = new CreateConnectionUseCases(
+      connectionsRepository,
+      panoramasRepository,
+    )
+
+    deletePanorama = new DeletePanoramaUseCases(
+      panoramasRepository,
+      imagesStorage,
+    )
   })
 
   it('shoud be able to create connection', async () => {
@@ -26,46 +39,58 @@ describe('Create Connection Use Case', () => {
       imagesStorage,
     )
 
-    const firstLink = {
-      panorama_id: firstPanoramaId,
-      coord_x: 100,
-      coord_y: 100,
-      panorama_connect_id: secondPanoramaId,
+    const firstConnection = {
+      yaw: 100,
+      pitch: 100,
+      connected_from_id: firstPanoramaId,
+      connected_to_id: secondPanoramaId,
     }
-    const secondLink = {
-      panorama_id: secondPanoramaId,
-      coord_x: 200,
-      coord_y: 200,
-      panorama_connect_id: firstPanoramaId,
+    const secondConnection = {
+      yaw: 100,
+      pitch: 100,
+      connected_from_id: secondPanoramaId,
+      connected_to_id: firstPanoramaId,
     }
 
-    await sut.execute([firstLink, secondLink])
+    await sut.execute({ connections: [firstConnection, secondConnection] })
 
-    const firstPanorama = await panoramasRepository.findById(firstPanoramaId)
-    const secondPanorama = await panoramasRepository.findById(secondPanoramaId)
+    const firstConnectionData = await connectionsRepository.findByIds({
+      connected_from_id: firstPanoramaId,
+      connected_to_id: secondPanoramaId,
+    })
+    const secondConnectionData = await connectionsRepository.findByIds({
+      connected_from_id: secondPanoramaId,
+      connected_to_id: firstPanoramaId,
+    })
 
-    expect(firstPanorama?.links).contain(firstLink)
-    expect(secondPanorama?.links).contain(secondLink)
+    expect(firstConnectionData).toEqual(firstConnection)
+    expect(secondConnectionData).toEqual(secondConnection)
+
+    // clean images created
+    await deletePanorama.execute({ id: firstPanoramaId })
+    await deletePanorama.execute({ id: secondPanoramaId })
   })
   it('shoud not be able to create connection if panoramaId invalid', async () => {
     const firstPanoramaId = 'invalid-id'
     const secondPanoramaId = 'invalid-id'
 
     expect(() =>
-      sut.execute([
-        {
-          panorama_id: firstPanoramaId,
-          coord_x: 100,
-          coord_y: 100,
-          panorama_connect_id: secondPanoramaId,
-        },
-        {
-          panorama_id: secondPanoramaId,
-          coord_x: 100,
-          coord_y: 100,
-          panorama_connect_id: firstPanoramaId,
-        },
-      ]),
+      sut.execute({
+        connections: [
+          {
+            yaw: 100,
+            pitch: 100,
+            connected_from_id: firstPanoramaId,
+            connected_to_id: secondPanoramaId,
+          },
+          {
+            yaw: 100,
+            pitch: 100,
+            connected_from_id: secondPanoramaId,
+            connected_to_id: firstPanoramaId,
+          },
+        ],
+      }),
     ).rejects.toBeInstanceOf(ResourceNotFoundError)
   })
 })

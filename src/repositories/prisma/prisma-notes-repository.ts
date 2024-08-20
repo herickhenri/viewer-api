@@ -27,8 +27,8 @@ export class PrismaNotesRepository implements NotesRepository {
         panoramas: {
           select: {
             panorama_id: true,
-            coord_x: true,
-            coord_y: true,
+            yaw: true,
+            pitch: true,
           },
         },
       },
@@ -43,8 +43,8 @@ export class PrismaNotesRepository implements NotesRepository {
         panoramas: {
           select: {
             panorama_id: true,
-            coord_x: true,
-            coord_y: true,
+            yaw: true,
+            pitch: true,
           },
         },
       },
@@ -67,13 +67,13 @@ export class PrismaNotesRepository implements NotesRepository {
   }
 
   async createMarkup(input: NotesOnPanoramasInput) {
-    await prisma.notesOnPanoramas.create({
+    await prisma.noteOnPanorama.create({
       data: input,
     })
   }
 
   async deleteMarkup({ note_id, panorama_id }: DeleteMarkupRequest) {
-    await prisma.notesOnPanoramas.delete({
+    await prisma.noteOnPanorama.delete({
       where: {
         note_id_panorama_id: { note_id, panorama_id },
       },

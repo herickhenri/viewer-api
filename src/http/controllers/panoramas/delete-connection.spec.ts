@@ -39,26 +39,36 @@ describe('Delete Connection (e2e)', () => {
     await request(app.server)
       .post('/connection')
       .send({
-        connection: [
+        connections: [
           {
-            panorama_id: firstPanoramaId,
-            panorama_connect_id: secondPanoramaId,
-            coord_x: 100,
-            coord_y: 100,
+            yaw: 100,
+            pitch: 100,
+            connected_from_id: firstPanoramaId,
+            connected_to_id: secondPanoramaId,
           },
           {
-            panorama_id: secondPanoramaId,
-            panorama_connect_id: firstPanoramaId,
-            coord_x: 100,
-            coord_y: 100,
+            yaw: 100,
+            pitch: 100,
+            connected_from_id: secondPanoramaId,
+            connected_to_id: firstPanoramaId,
           },
         ],
       })
 
-    const response = await request(app.server).delete('/connection').send({
-      panorama_id: firstPanoramaId,
-      panorama_connect_id: secondPanoramaId,
-    })
+    const response = await request(app.server)
+      .delete('/connection')
+      .send({
+        connectionsIds: [
+          {
+            connected_from_id: firstPanoramaId,
+            connected_to_id: secondPanoramaId,
+          },
+          {
+            connected_from_id: secondPanoramaId,
+            connected_to_id: firstPanoramaId,
+          },
+        ],
+      })
 
     expect(response.statusCode).toEqual(204)
   })

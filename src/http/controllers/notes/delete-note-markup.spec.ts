@@ -43,8 +43,8 @@ describe('Delete Note Markup (e2e)', () => {
     await request(app.server).post('/note/markup').send({
       panorama_id,
       note_id,
-      coord_x: 100,
-      coord_y: 100,
+      yaw: 100,
+      pitch: 100,
     })
 
     const response = await request(app.server).delete('/note/markup').send({

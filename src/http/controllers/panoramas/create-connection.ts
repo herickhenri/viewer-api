@@ -7,21 +7,21 @@ export async function createConnection(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  const linkSchema = z.object({
-    panorama_connect_id: z.string(),
-    panorama_id: z.string(),
-    coord_x: z.number(),
-    coord_y: z.number(),
+  const connectionSchema = z.object({
+    yaw: z.number(),
+    pitch: z.number(),
+    connected_from_id: z.string(),
+    connected_to_id: z.string(),
   })
   const panoramaBodySchema = z.object({
-    connection: z.tuple([linkSchema, linkSchema]),
+    connections: z.tuple([connectionSchema, connectionSchema]),
   })
   const data = panoramaBodySchema.parse(request.body)
 
   try {
     const createConnectionUseCases = makeCreateConnectionUseCases()
 
-    await createConnectionUseCases.execute(data.connection)
+    await createConnectionUseCases.execute(data)
 
     return reply.status(201).send()
   } catch (err) {

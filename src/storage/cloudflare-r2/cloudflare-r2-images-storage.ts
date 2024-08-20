@@ -58,15 +58,15 @@ export class CloudflareR2ImagesStorage implements ImagesStorage {
   }
 
   async deleteMany(keys: string[]) {
-    keys.forEach(async (key) => {
-      console.log({ key })
+    await Promise.all(
+      keys.map(async (key) => {
+        const deleteObjectCommand = new DeleteObjectCommand({
+          Bucket: env.CLOUDFLARE_BUCKET_NAME,
+          Key: key,
+        })
 
-      const deleteObjectCommand = new DeleteObjectCommand({
-        Bucket: env.CLOUDFLARE_BUCKET_NAME,
-        Key: key,
-      })
-
-      await s3Client.send(deleteObjectCommand)
-    })
+        await s3Client.send(deleteObjectCommand)
+      }),
+    )
   }
 }

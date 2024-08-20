@@ -17,16 +17,9 @@ export async function updatePanorama(
   })
   const equipmentsSchema = z.array(
     z.object({
-      coord_x: z.number(),
-      coord_y: z.number(),
+      yaw: z.number(),
+      pitch: z.number(),
       equipment_id: z.string(),
-    }),
-  )
-  const linksSchema = z.array(
-    z.object({
-      coord_x: z.number(),
-      coord_y: z.number(),
-      panorama_connect_id: z.string(),
     }),
   )
   const panoramaBodySchema = z.object({
@@ -41,11 +34,6 @@ export async function updatePanorama(
       .string()
       .transform((json) => JSON.parse(json))
       .pipe(equipmentsSchema)
-      .optional(),
-    links: z
-      .string()
-      .transform((json) => JSON.parse(json))
-      .pipe(linksSchema)
       .optional(),
   })
 

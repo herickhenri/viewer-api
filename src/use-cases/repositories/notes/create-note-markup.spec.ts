@@ -15,8 +15,8 @@ describe('Create Note Markup Use Case', () => {
   it('shoud be able to create markup', async () => {
     const id = '12345678'
     const connection = {
-      coord_x: 100,
-      coord_y: 100,
+      yaw: 100,
+      pitch: 100,
       panorama_id: 'panorama_id',
     }
 
@@ -44,8 +44,8 @@ describe('Create Note Markup Use Case', () => {
     await expect(() =>
       sut.execute({
         note_id: 'no-exist-id',
-        coord_x: 100,
-        coord_y: 100,
+        yaw: 100,
+        pitch: 100,
         panorama_id: 'panorama_id',
       }),
     ).rejects.toBeInstanceOf(ResourceNotFoundError)
@@ -65,13 +65,13 @@ describe('Create Note Markup Use Case', () => {
     })
 
     const firstConnection = {
-      coord_x: 100,
-      coord_y: 100,
+      yaw: 100,
+      pitch: 100,
       panorama_id: 'first_panorama_id',
     }
     const secondConnection = {
-      coord_x: 100,
-      coord_y: 100,
+      yaw: 100,
+      pitch: 100,
       panorama_id: 'second_panorama_id',
     }
 

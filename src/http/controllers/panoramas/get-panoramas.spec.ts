@@ -28,11 +28,13 @@ describe('Get Panoramas (e2e)', () => {
       .field('name', 'panorama-1')
       .attach('file', filePath)
 
-    const equipmentCreated = createResponse.body.panorama
+    const panoramaCreated = createResponse.body.panorama
 
     const response = await request(app.server).get(`/panoramas`)
 
+    console.log({ panoramaCreated })
+
     expect(response.statusCode).toEqual(200)
-    expect([equipmentCreated]).toEqual(response.body.panoramas)
+    expect([panoramaCreated]).toEqual(response.body.panoramas)
   })
 })

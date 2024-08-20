@@ -20,14 +20,9 @@ interface updatePanoramaRequest {
       contentType: string
     }
     equipments?: {
-      coord_x: number
-      coord_y: number
+      yaw: number
+      pitch: number
       equipment_id: string
-    }[]
-    links?: {
-      coord_x: number
-      coord_y: number
-      panorama_connect_id: string
     }[]
   }
   id: string
@@ -44,19 +39,9 @@ export class UpdatePanoramaUseCases {
   ) {}
 
   async execute({
-    data: { equipments, file, links, name },
+    data: { equipments, file, name },
     id,
   }: updatePanoramaRequest): Promise<updatePanoramaResponse> {
-    links?.forEach((link) => {
-      const panoramaFound = this.panoramasRepository.findById(
-        link.panorama_connect_id,
-      )
-
-      if (!panoramaFound) {
-        throw new ResourceNotFoundError()
-      }
-    })
-
     const panoramaFound = await this.panoramasRepository.findById(id)
 
     if (!panoramaFound) {
@@ -103,7 +88,7 @@ export class UpdatePanoramaUseCases {
     }
 
     const panorama = await this.panoramasRepository.update(
-      { equipments, images, links, name },
+      { equipments, images, name },
       id,
     )
 

@@ -38,18 +38,18 @@ describe('Create Connection (e2e)', () => {
     const response = await request(app.server)
       .post('/connection')
       .send({
-        connection: [
+        connections: [
           {
-            panorama_id: firstPanoramaId,
-            panorama_connect_id: secondPanoramaId,
-            coord_x: 100,
-            coord_y: 100,
+            yaw: 100,
+            pitch: 100,
+            connected_from_id: firstPanoramaId,
+            connected_to_id: secondPanoramaId,
           },
           {
-            panorama_id: secondPanoramaId,
-            panorama_connect_id: firstPanoramaId,
-            coord_x: 100,
-            coord_y: 100,
+            yaw: 100,
+            pitch: 100,
+            connected_from_id: secondPanoramaId,
+            connected_to_id: firstPanoramaId,
           },
         ],
       })

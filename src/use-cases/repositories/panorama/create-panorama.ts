@@ -1,4 +1,3 @@
-import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found-error'
 import {
   Panorama,
   PanoramasRepository,
@@ -13,14 +12,9 @@ interface createPanoramaRequest {
     contentType: string
   }
   equipments?: {
-    coord_x: number
-    coord_y: number
+    yaw: number
+    pitch: number
     equipment_id: string
-  }[]
-  links?: {
-    coord_x: number
-    coord_y: number
-    panorama_connect_id: string
   }[]
 }
 
@@ -38,18 +32,7 @@ export class CreatePanoramaUseCases {
     name,
     file,
     equipments,
-    links,
   }: createPanoramaRequest): Promise<createPanoramaResponse> {
-    links?.forEach((link) => {
-      const panoramaFound = this.panoramasRepository.findById(
-        link.panorama_connect_id,
-      )
-
-      if (!panoramaFound) {
-        throw new ResourceNotFoundError()
-      }
-    })
-
     const allSizes = [512, 1024, 2048, 4096, 8192]
     const metadata = await sharp(file.buffer).metadata()
     const width = metadata.width

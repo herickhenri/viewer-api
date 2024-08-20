@@ -7,7 +7,7 @@ import {
 } from '../notes-repository'
 
 export class InMemoryNotesRepository implements NotesRepository {
-  public notes: Note[] = []
+  private notes: Note[] = []
 
   async create(note: Note) {
     this.notes.push(note)
@@ -46,8 +46,8 @@ export class InMemoryNotesRepository implements NotesRepository {
 
     const newMarkup = {
       panorama_id: input.panorama_id,
-      coord_x: input.coord_x,
-      coord_y: input.coord_y,
+      yaw: input.yaw,
+      pitch: input.pitch,
     }
 
     const updatedNote: Note = {

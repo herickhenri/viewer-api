@@ -7,13 +7,16 @@ export async function deleteConnection(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  const connectionBodySchema = z.object({
-    panorama_connect_id: z.string(),
-    panorama_id: z.string(),
+  const connectionIds = z.object({
+    connected_from_id: z.string(),
+    connected_to_id: z.string(),
   })
 
-  const data = connectionBodySchema.parse(request.body)
+  const connectionsBodySchema = z.object({
+    connectionsIds: z.tuple([connectionIds, connectionIds]),
+  })
 
+  const data = connectionsBodySchema.parse(request.body)
   try {
     const deleteConnectionUseCases = makeDeleteConnectionUseCases()
 

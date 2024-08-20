@@ -8,8 +8,8 @@ export type Note = {
   equipment_id: string | null
   panoramas?: {
     panorama_id: string
-    coord_x: number
-    coord_y: number
+    yaw: number
+    pitch: number
   }[]
 }
 
@@ -26,8 +26,8 @@ export type NoteInput = {
 export type NotesOnPanoramasInput = {
   panorama_id: string
   note_id: string
-  coord_x: number
-  coord_y: number
+  yaw: number
+  pitch: number
 }
 
 export type DeleteMarkupRequest = {

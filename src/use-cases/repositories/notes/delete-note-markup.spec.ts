@@ -18,8 +18,8 @@ describe('Delete Note Markup Use Case', () => {
     let noteFind: Note | null
 
     const connection = {
-      coord_x: 100,
-      coord_y: 100,
+      yaw: 100,
+      pitch: 100,
       panorama_id: 'panorama_id',
     }
 
@@ -72,13 +72,13 @@ describe('Delete Note Markup Use Case', () => {
     })
 
     const firstConnection = {
-      coord_x: 100,
-      coord_y: 100,
+      yaw: 100,
+      pitch: 100,
       panorama_id: 'first_panorama_id',
     }
     const secondConnection = {
-      coord_x: 100,
-      coord_y: 100,
+      yaw: 100,
+      pitch: 100,
       panorama_id: 'second_panorama_id',
     }
 

@@ -62,16 +62,18 @@ export class UpdateEquipmentUseCases {
       }
     }
 
-    const photosAlreadyExists = data.photos?.every((dataPhoto) =>
-      equipmentFound.photos?.some(
-        (equipPhoto) =>
-          equipPhoto.key === dataPhoto.key &&
-          equipPhoto.link === dataPhoto.link,
-      ),
-    )
+    if (data.photos) {
+      const photosAlreadyExists = data.photos.every((dataPhoto) =>
+        equipmentFound.photos?.some(
+          (equipPhoto) =>
+            equipPhoto.key === dataPhoto.key &&
+            equipPhoto.link === dataPhoto.link,
+        ),
+      )
 
-    if (!photosAlreadyExists) {
-      throw new ResourceNotFoundError()
+      if (!photosAlreadyExists) {
+        throw new ResourceNotFoundError()
+      }
     }
 
     const photosKept = data.photos

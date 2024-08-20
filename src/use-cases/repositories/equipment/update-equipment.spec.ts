@@ -19,10 +19,10 @@ describe('Update Equipment Use Case', () => {
   })
 
   it('shoud be able to update equipment', async () => {
-    const { id } = await createEquipment({
+    const equipmentCreated = await createEquipment({
       equipmentsRepository,
       imagesStorage,
-      isToCreateImage: true,
+      isToCreateImage: false,
     })
     const updateEquipment = {
       name: 'Equipment-2',
@@ -30,9 +30,12 @@ describe('Update Equipment Use Case', () => {
       description: 'The equipment 2',
       files: [],
     }
-    const { equipment } = await sut.execute({ data: updateEquipment, id })
+    const { equipment } = await sut.execute({
+      data: updateEquipment,
+      id: equipmentCreated.id,
+    })
     expect(equipment).toEqual({
-      id,
+      id: equipmentCreated.id,
       name: updateEquipment.name,
       tag: updateEquipment.tag,
       description: updateEquipment.description,
@@ -142,7 +145,10 @@ describe('Update Equipment Use Case', () => {
       isToCreateImage: true,
     })
 
-    const { equipment } = await sut.execute({ data: { files: [] }, id })
+    const { equipment } = await sut.execute({
+      data: { photos: [] },
+      id,
+    })
 
     expect(equipment.photos).toStrictEqual([])
   })
