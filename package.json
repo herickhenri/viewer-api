@@ -8,7 +8,7 @@
     "dev": "tsx watch src/server.ts",
     "transform": "tsx src/transform-url",
     "start": "node build/server.js",
-    "build": "tsup src --out-dir build",
+    "build": "tsc --build ./tsconfig.json",
     "test:create-prisma-environment": "npm link ./prisma/vitest-environment-prisma",
     "test:install-prisma-environment": "npm link vitest-environment-prisma",
     "test": "vitest run --dir src/use-cases",
